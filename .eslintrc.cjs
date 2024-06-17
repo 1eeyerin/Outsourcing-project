@@ -32,6 +32,7 @@ module.exports = {
         endOfLine: 'auto'
       }
     ],
+
     'react/jsx-no-target-blank': 'off',
     'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     // prop-types 미사용
