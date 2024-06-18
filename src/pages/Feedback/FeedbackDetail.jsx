@@ -1,12 +1,26 @@
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
+import { getFeedback } from '@/supabase/feedback';
 
 const FeedbackDetail = () => {
+  const { id } = useParams();
+
+  const { data, isPending } = useQuery({
+    queryKey: ['feedback', id],
+    queryFn: () => getFeedback(117),
+    select: (data) => data[0]
+  });
+
+  if (isPending) return null;
+
   return (
     <div>
       <StArticle>
-        <StTitle>제목</StTitle>
-        <StContent>내용</StContent>
+        <StText>{data.title}</StText>
+        <StText>{data.name}</StText>
+        <StContent>{data.content}</StContent>
       </StArticle>
       <StButtons>
         <Button variant="rounded">목록으로</Button>
@@ -37,7 +51,7 @@ const StArticle = styled.article`
   gap: 16px;
 `;
 
-const StTitle = styled.div`
+const StText = styled.div`
   padding: 24px 32px;
   border-radius: 12px;
   background-color: #11151b;
