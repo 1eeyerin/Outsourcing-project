@@ -1,30 +1,55 @@
 import { useParams } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import styled, { css } from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
 import Textarea from '@/components/Textarea';
+import { updateFeedback } from '@/supabase/feedback';
 
 const FeedbackForm = () => {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const data = queryClient.getQueryData(['feedback', id])?.[0] || {};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const { mutate: updateMutation } = useMutation({
+    mutationFn: (content) => updateFeedback({ id, content }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['feedback', id] });
+    },
+    enabled: !!id
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const { name, email, password, passwordConfirm, title, content } = Object.fromEntries(formData.entries());
+
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 일치하지 않아요.');
+      return;
+    }
+
+    // TODO : 생성할땐 제외
+    if (password !== data.password) {
+      alert('작성하신 비밀번호가 아니에요.');
+      return;
+    }
+
+    updateMutation({ name, email, password, title, content });
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <StInputs>
         <StInputRow>
-          <Input placeholder="닉네임" defaultValue={data?.name} readOnly />
-          <Input type="email" placeholder="이메일" defaultValue={data?.email} readOnly />
-          <Input type="password" placeholder="비밀번호" required />
-          <Input type="password" placeholder="비밀번호 확인" required />
+          <Input placeholder="닉네임" name="name" defaultValue={data?.name} readOnly />
+          <Input type="email" placeholder="이메일" name="email" defaultValue={data?.email} readOnly />
+          <Input type="password" placeholder="비밀번호" name="password" required />
+          <Input type="password" placeholder="비밀번호 확인" name="passwordConfirm" required />
         </StInputRow>
-        <Input placeholder="제목" css={inputStyle} defaultValue={data?.title} required />
-        <Textarea placeholder="내용" defaultValue={data?.content} required />
+        <Input placeholder="제목" css={inputStyle} name="title" defaultValue={data?.title} required />
+        <Textarea placeholder="내용" name="content" defaultValue={data?.content} required />
       </StInputs>
       <StButtons>
         <Button type="submit" variant="rounded">
