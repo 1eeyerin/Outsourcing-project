@@ -12,7 +12,7 @@ import styled from 'styled-components';
  */
 
 const Input = forwardRef(({ type = 'text', css, ...props }, ref) => {
-  return <StInput type={type} css={css} {...props} ref={ref} />;
+  return <StInput type={type} $css={css} {...props} ref={ref} />;
 });
 
 const StInput = styled.input`

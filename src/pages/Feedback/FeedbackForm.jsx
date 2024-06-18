@@ -1,9 +1,15 @@
+import { useParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import styled, { css } from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
 import Textarea from '@/components/Textarea';
 
 const FeedbackForm = () => {
+  const { id } = useParams();
+  const queryClient = useQueryClient();
+  const data = queryClient.getQueryData(['feedback', id])?.[0] || {};
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -12,16 +18,18 @@ const FeedbackForm = () => {
     <form onSubmit={handleSubmit}>
       <StInputs>
         <StInputRow>
-          <Input placeholder="닉네임" />
-          <Input type="email" placeholder="이메일" />
-          <Input type="password" placeholder="비밀번호" />
-          <Input type="password" placeholder="비밀번호 확인" />
+          <Input placeholder="닉네임" defaultValue={data?.name} readOnly />
+          <Input type="email" placeholder="이메일" defaultValue={data?.email} readOnly />
+          <Input type="password" placeholder="비밀번호" required />
+          <Input type="password" placeholder="비밀번호 확인" required />
         </StInputRow>
-        <Input placeholder="제목" css={inputStyle} />
-        <Textarea placeholder="내용" />
+        <Input placeholder="제목" css={inputStyle} defaultValue={data?.title} required />
+        <Textarea placeholder="내용" defaultValue={data?.content} required />
       </StInputs>
       <StButtons>
-        <Button variant="rounded">작성하기</Button>
+        <Button type="submit" variant="rounded">
+          작성하기
+        </Button>
       </StButtons>
     </form>
   );

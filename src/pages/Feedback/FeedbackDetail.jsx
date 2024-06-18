@@ -1,17 +1,31 @@
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
-import { getFeedback } from '@/supabase/feedback';
+import { deleteFeedback, getFeedback } from '@/supabase/feedback';
 
 const FeedbackDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data, isPending } = useQuery({
     queryKey: ['feedback', id],
     queryFn: () => getFeedback(117),
     select: (data) => data[0]
   });
+
+  const { mutate: deleteFeedbackMutation } = useMutation({
+    mutationFn: () => deleteFeedback(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['feedback'] });
+      navigate(-1);
+    }
+  });
+
+  const handleDeleteFeedback = () => {
+    deleteFeedbackMutation(id);
+  };
 
   if (isPending) return null;
 
@@ -25,8 +39,12 @@ const FeedbackDetail = () => {
       <StButtons>
         <Button variant="rounded">목록으로</Button>
         <StRow>
-          <Button variant="rounded">수정하기</Button>
-          <Button variant="rounded">삭제하기</Button>
+          <Button variant="rounded" href={`/feedback/${id}/edit`}>
+            수정하기
+          </Button>
+          <Button variant="rounded" onClick={handleDeleteFeedback}>
+            삭제하기
+          </Button>
         </StRow>
       </StButtons>
     </div>
