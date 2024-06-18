@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchAllMenus } from '@/supabase/menu';
+import { fetchMenus } from '@/supabase/menu';
 
-export const useFetchAllMenus = () => {
+export const useFetchMenus = (category) => {
   return useQuery({
-    queryKey: ['menus'],
-    queryFn: fetchAllMenus
+    queryKey: ['menus', category],
+    queryFn: () => fetchMenus(category),
+    enabled: !!category
   });
 };

@@ -1,25 +1,29 @@
-import { useMemo, useState } from 'react';
-import { MenuCategory, MenuList } from '@/components/Menu';
-import { useFetchAllMenus } from '@/stores/queries/useMenuQueries';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { MenuList } from '@/components/Menu';
+import { useFetchMenus } from '@/stores/queries/useMenuQueries';
 
 const Menu = () => {
-  const [selectedCategories, setSelectedCategories] = useState(['all']);
-  const { data: allMenus, error, isFetching } = useFetchAllMenus();
+  const { category } = useParams();
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState(category || 'all');
+  const { data: menus } = useFetchMenus(selectedCategory);
 
-  const handleCategoryChange = (categories) => {
-    setSelectedCategories(categories);
+  useEffect(() => {
+    if (category) {
+      setSelectedCategory(category);
+    } else {
+      setSelectedCategory('all');
+    }
+  }, [category]);
+
+  const handleCategoryClick = (category) => {
+    navigate(`/menu/${category}`);
   };
 
-  const filteredMenus = useMemo(() => {
-    if (!allMenus) return [];
-    if (selectedCategories.includes('all')) return allMenus; // "전체" 선택 시 모든 메뉴를 반환
-    return allMenus.filter((menu) => selectedCategories.includes(menu.category));
-  }, [selectedCategories, allMenus]);
-
-  if (isFetching) return <div>Loading...</div>;
-  if (error) return <div>Error fetching menus: {error.message}</div>;
-
   const categories = [
+    { value: 'all', label: '전체' },
     { value: 'stirfryEasyDishes', label: '볶음&간단' },
     { value: 'soup', label: '탕' },
     { value: 'friedFoods', label: '튀김' },
@@ -28,10 +32,32 @@ const Menu = () => {
 
   return (
     <div>
-      <MenuCategory categories={categories} onChange={handleCategoryChange} />
-      <MenuList menus={filteredMenus} />
+      <StCategoryList>
+        {categories.map((category) => (
+          <StCategoryItem
+            key={category.value}
+            selected={selectedCategory === category.value}
+            onClick={() => handleCategoryClick(category.value)}
+          >
+            {category.label}
+          </StCategoryItem>
+        ))}
+      </StCategoryList>
+      <MenuList menus={menus} />
     </div>
   );
 };
 
 export default Menu;
+
+const StCategoryList = styled.ul`
+  display: flex;
+  gap: 10px;
+`;
+
+const StCategoryItem = styled.li`
+  cursor: pointer;
+  font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
+  padding: 5px 10px;
+  border-radius: 5px;
+`;
