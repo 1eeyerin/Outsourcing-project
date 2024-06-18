@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import debounce from 'lodash/debounce';
 import styled from 'styled-components';
-
-const DEBOUNCE_DELAY = 1000;
 
 const MapContainer = () => {
   const [map, setMap] = useState(null);
@@ -12,8 +11,6 @@ const MapContainer = () => {
   const [searchTerm, setSearchTerm] = useState('1943');
   const [pagination, setPagination] = useState(null);
   const [searchedOnce, setSearchedOnce] = useState(false);
-
-  const debounceTimeout = useRef(null);
 
   useEffect(() => {
     const loadMap = () => {
@@ -33,11 +30,12 @@ const MapContainer = () => {
 
   useEffect(() => {
     if (ps && searchTerm) {
-      // 디바운싱 적용: 입력값이 변경될 때 검색을 지연시킴
-      clearTimeout(debounceTimeout.current);
-      debounceTimeout.current = setTimeout(() => {
-        searchPlaces(searchTerm);
-      }, DEBOUNCE_DELAY);
+      const debouncedSearch = debounce(searchPlaces, 1000); // debounce 함수로 searchPlaces 함수를 2초 지연시킵니다.
+      debouncedSearch(searchTerm); // 검색어가 변경될 때마다 debouncedSearch 함수를 호출합니다.
+
+      return () => {
+        debouncedSearch.cancel(); // cleanup 함수에서 debounce된 함수를 취소합니다.
+      };
     }
   }, [ps, searchTerm]);
 
@@ -146,13 +144,13 @@ const MapContainer = () => {
 
   return (
     <StContainer>
-      <h2>매장찾기</h2>
+      <StHeading>매장찾기</StHeading>
       <StMapWrap>
         <StMap id="map" />
         <StSearchBox>
           <p>찾으실 매장을 검색해주세요</p>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <input
+          <StForm onSubmit={(e) => e.preventDefault()}>
+            <StInput
               type="text"
               id="keyword"
               value={searchTerm}
@@ -160,7 +158,7 @@ const MapContainer = () => {
               onKeyPress={handleKeyPress}
               placeholder="Search..."
             />
-          </form>
+          </StForm>
 
           <StListBox>
             <ul>
@@ -168,7 +166,7 @@ const MapContainer = () => {
               {placesList.map((place, index) => (
                 <StItem key={index} onClick={() => handleClickPlace(index)}>
                   <h5>{place.place_name}</h5>
-                  <p>{place.address_name}</p>
+                  <StParagraph>{place.address_name}</StParagraph>
                 </StItem>
               ))}
             </ul>
@@ -192,12 +190,13 @@ const MapContainer = () => {
 const StContainer = styled.div`
   height: 500px;
   padding: 56px 0;
-  h2 {
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 58px;
-  }
+`;
+
+const StHeading = styled.h2`
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 58px;
 `;
 
 const StMapWrap = styled.div`
@@ -222,36 +221,36 @@ const StSearchBox = styled.div`
   padding: 30px 0;
   border: 1px solid #eceef6;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #ffffff;
   box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
   overflow: hidden;
   z-index: 10;
+`;
 
-  > p {
-    color: #333;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 0 20px;
-    margin-bottom: 20px;
-  }
+const StParagraph = styled.p`
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 20px;
+  margin-bottom: 20px;
+`;
 
-  form {
-    position: relative;
-    height: 45px;
-    padding: 0 20px;
+const StForm = styled.form`
+  position: relative;
+  height: 45px;
+  padding: 0 20px;
+`;
 
-    input {
-      width: 100%;
-      height: 100%;
-      border: 1px solid #eceef6;
-      border-radius: 8px;
-      padding: 8px 13px;
-      box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+const StInput = styled.input`
+  width: 100%;
+  height: 100%;
+  border: 1px solid #eceef6;
+  border-radius: 8px;
+  padding: 8px 13px;
+  box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
 
-      &:focus {
-        outline: none;
-      }
-    }
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -262,13 +261,16 @@ const StListBox = styled.div`
   width: 100%;
   padding-bottom: 20px;
   overflow-y: auto;
+
   &::-webkit-scrollbar {
     width: 10px;
   }
+
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background-color: #a8a8a8;
   }
+
   &::-webkit-scrollbar-track {
     background-color: #f1f1f1;
     border-radius: 10px;

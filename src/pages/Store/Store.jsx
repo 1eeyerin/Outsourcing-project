@@ -1,11 +1,7 @@
 import StoreContainer from '@/components/StoreContainer';
 
 const Store = () => {
-  return (
-    <div>
-      <StoreContainer />
-    </div>
-  );
+  return <StoreContainer />;
 };
 
 export default Store;
