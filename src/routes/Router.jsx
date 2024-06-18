@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home } from '@/pages';
+import { Home, MapPage } from '@/pages';
 import Layout from '@/components/Layout';
 
 const router = createBrowserRouter([
@@ -10,6 +10,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: '/MapPage',
+        element: <MapPage />
       }
     ]
   }
