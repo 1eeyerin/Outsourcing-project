@@ -1,5 +1,13 @@
+// src/components/MapPage.jsx
+
+import MapContainer from '@/components/MapContainer';
+
 const MapPage = () => {
-  return <h1>MapPage입니다 !</h1>;
+  return (
+    <div>
+      <MapContainer />
+    </div>
+  );
 };
 
 export default MapPage;
