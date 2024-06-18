@@ -31,7 +31,8 @@ const Menu = () => {
   ];
 
   return (
-    <div>
+    <StMenuContainer>
+      <StMenuTitle>메뉴소개</StMenuTitle>
       <StCategoryList>
         {categories.map((category) => (
           <StCategoryItem
@@ -44,12 +45,21 @@ const Menu = () => {
         ))}
       </StCategoryList>
       <MenuList menus={menus} />
-    </div>
+    </StMenuContainer>
   );
 };
 
 export default Menu;
 
+const StMenuContainer = styled.div`
+  margin-top: 80px;
+  height: 100%;
+`;
+const StMenuTitle = styled.h3`
+  font-size: 24px;
+  margin-bottom: 84px;
+  text-align: center;
+`;
 const StCategoryList = styled.ul`
   display: flex;
   gap: 10px;
