@@ -38,6 +38,7 @@ const StSearchBox = styled.div`
   box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
   overflow: hidden;
   z-index: 10;
+
   > p {
     color: #333;
     font-size: 15px;
@@ -45,10 +46,12 @@ const StSearchBox = styled.div`
     padding: 0 20px;
     margin-bottom: 20px;
   }
+
   form {
     position: relative;
     height: 45px;
     padding: 0 20px;
+
     input {
       width: 100%;
       height: 100%;
@@ -56,18 +59,14 @@ const StSearchBox = styled.div`
       border-radius: 8px;
       padding: 8px 13px;
       box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+
       &:focus {
         outline: none;
       }
     }
-    button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 20px;
-    }
   }
 `;
+
 const StListBox = styled.div`
   position: absolute;
   top: 145px;
@@ -75,42 +74,47 @@ const StListBox = styled.div`
   width: 100%;
   padding-bottom: 20px;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #a8a8a8;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+  }
 `;
+
 const StItem = styled.li`
   padding: 24px;
   cursor: pointer;
+
   h5 {
     margin-bottom: 10px;
     color: #232323;
     font-size: 16px;
     font-weight: 700;
   }
+
   p {
     color: #b0b0b0;
     font-size: 13px;
   }
+
   &:hover {
     background-color: #f7f7f7;
   }
 `;
+
 const StPagination = styled.div`
   text-align: center;
+
   button {
     border: none;
     background-color: inherit;
     cursor: pointer;
-  }
-`;
-
-const PlaceItem = styled.div`
-  margin: 3px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #e0e0e0;
   }
 `;
 
@@ -141,7 +145,6 @@ const MapContainer = () => {
   }, []);
 
   useEffect(() => {
-    // 페이지가 처음 로드될 때 한 번 검색
     if (ps && searchTerm) {
       searchPlaces(searchTerm);
     }
@@ -232,12 +235,9 @@ const MapContainer = () => {
     const marker = markers[index];
     map.panTo(marker.getPosition());
     displayInfowindow(marker, marker.getTitle());
-
-    map.setLevel(map.getLevel() - 1);
   };
 
   const handleInputChange = (e) => {
-    e.preventDefault();
     setSearchTerm(e.target.value);
   };
 
@@ -246,12 +246,13 @@ const MapContainer = () => {
       if (searchTerm.trim()) {
         setSearchTerm(searchTerm.trim());
         setSearchedOnce(false);
-        searchPlaces(searchTerm.trim()); // 검색어가 유효할 때 검색 실행
+        searchPlaces(searchTerm.trim());
       } else {
         alert('검색어를 입력하세요!');
       }
     }
   };
+
   return (
     <StContainer>
       <h2>매장찾기</h2>
@@ -259,26 +260,25 @@ const MapContainer = () => {
         <StMap id="map" />
         <StSearchBox>
           <p>찾으실 매장을 검색해주세요</p>
-          <form onSubmit={handleKeyPress}>
+          <form onSubmit={(e) => e.preventDefault()}>
             <input
               type="text"
               id="keyword"
               value={searchTerm}
               onChange={handleInputChange}
-              // onKeyPress={handleKeyPress}
+              onKeyPress={handleKeyPress}
               placeholder="Search..."
             />
-            <button type="submit">검색</button>
           </form>
 
           <StListBox>
             <ul>
               {searchedOnce && placesList.length === 0 && <p>검색 결과가 없습니다.</p>}
               {placesList.map((place, index) => (
-                <PlaceItem key={index} onClick={() => handleClickPlace(index)}>
+                <StItem key={index} onClick={() => handleClickPlace(index)}>
                   <h5>{place.place_name}</h5>
                   <p>{place.address_name}</p>
-                </PlaceItem>
+                </StItem>
               ))}
             </ul>
 
