@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home, MapPage } from '@/pages';
+import { FeedbackDetail, FeedbackForm, Home, MapPage, PasswordCheck } from '@/pages';
 import Layout from '@/components/Layout';
 
 const router = createBrowserRouter([
@@ -14,6 +14,18 @@ const router = createBrowserRouter([
       {
         path: '/MapPage',
         element: <MapPage />
+      },
+      {
+        path: '/feedback/write',
+        element: <FeedbackForm />
+      },
+      {
+        path: '/feedback/password-check',
+        element: <PasswordCheck />
+      },
+      {
+        path: '/feedback/:id',
+        element: <FeedbackDetail />
       }
     ]
   }
