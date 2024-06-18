@@ -31,35 +31,26 @@ const MapContainer = () => {
   const [pagination, setPagination] = useState(null);
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${import.meta.env.VITE_KAKAO_KEY ?? ''}&libraries=services`;
-
-    script.onload = () => {
-      window.kakao.maps.load(() => {
-        const mapInstance = new window.kakao.maps.Map(document.getElementById('map'), {
-          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-          level: 3
-        });
-        setMap(mapInstance);
-
-        const infowindowInstance = new window.kakao.maps.InfoWindow({ zIndex: 1 });
-        setInfowindow(infowindowInstance);
-
-        const psInstance = new window.kakao.maps.services.Places();
-        setPs(psInstance);
-
-        // 초기 검색으로 "1943" 검색
-        searchPlaces('1943');
+    window.kakao.maps.load(() => {
+      const mapInstance = new window.kakao.maps.Map(document.getElementById('map'), {
+        center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
+        level: 3
       });
-    };
+      setMap(mapInstance);
 
-    document.head.appendChild(script);
+      const infowindowInstance = new window.kakao.maps.InfoWindow({ zIndex: 1 });
+      setInfowindow(infowindowInstance);
 
-    return () => {
-      document.head.removeChild(script);
-    };
+      const psInstance = new window.kakao.maps.services.Places();
+      setPs(psInstance);
+    });
   }, []);
+
+  useEffect(() => {
+    if (!ps) return;
+    // // 초기 검색으로 "1943" 검색
+    searchPlaces('1943');
+  }, [ps]);
 
   useEffect(() => {
     if (ps && searchKeyword) {
