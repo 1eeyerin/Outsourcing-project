@@ -102,6 +102,18 @@ const StPagination = styled.div`
   }
 `;
 
+const PlaceItem = styled.div`
+  margin: 3px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+`;
+
 const MapContainer = () => {
   const [map, setMap] = useState(null);
   const [infowindow, setInfowindow] = useState(null);
@@ -110,6 +122,7 @@ const MapContainer = () => {
   const [placesList, setPlacesList] = useState([]);
   const [searchTerm, setSearchTerm] = useState('1943');
   const [pagination, setPagination] = useState(null);
+  const [searchedOnce, setSearchedOnce] = useState(false);
 
   useEffect(() => {
     const loadMap = () => {
@@ -128,10 +141,11 @@ const MapContainer = () => {
   }, []);
 
   useEffect(() => {
+    // 페이지가 처음 로드될 때 한 번 검색
     if (ps && searchTerm) {
       searchPlaces(searchTerm);
     }
-  }, [searchTerm, ps]);
+  }, [ps]);
 
   const searchPlaces = (keyword) => {
     if (!keyword.trim()) {
@@ -152,11 +166,15 @@ const MapContainer = () => {
       setPlacesList(data);
       setPagination(paginationObj);
       displayPlacesOnMap(data);
+      setSearchedOnce(true);
     } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
       alert('검색 결과가 존재하지 않습니다.');
       setPlacesList([]);
+      setPagination(null);
+      setSearchedOnce(true);
     } else {
       alert('검색 결과 중 오류가 발생했습니다.');
+      setSearchedOnce(true);
     }
   };
 
@@ -178,12 +196,12 @@ const MapContainer = () => {
   };
 
   const addMarker = (position, title) => {
-    const imageSrc = 'https://ifh.cc/g/VVp1mZ.jpg';
-    const imageSize = new window.kakao.maps.Size(50, 50);
+    const imageSrc = 'https://ifh.cc/g/mBWY0S.png';
+    const imageSize = new window.kakao.maps.Size(30, 30);
     const imgOptions = {
-      spriteSize: new window.kakao.maps.Size(50, 50),
+      spriteSize: new window.kakao.maps.Size(30, 30),
       spriteOrigin: new window.kakao.maps.Point(0, 0),
-      offset: new window.kakao.maps.Point(25, 50)
+      offset: new window.kakao.maps.Point(15, 30)
     };
 
     const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
@@ -214,6 +232,8 @@ const MapContainer = () => {
     const marker = markers[index];
     map.panTo(marker.getPosition());
     displayInfowindow(marker, marker.getTitle());
+
+    map.setLevel(map.getLevel() - 1);
   };
 
   const handleInputChange = (e) => {
@@ -221,15 +241,17 @@ const MapContainer = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleSearchClick = () => {
-    searchPlaces(searchTerm);
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      if (searchTerm.trim()) {
+        setSearchTerm(searchTerm.trim());
+        setSearchedOnce(false);
+        searchPlaces(searchTerm.trim()); // 검색어가 유효할 때 검색 실행
+      } else {
+        alert('검색어를 입력하세요!');
+      }
+    }
   };
-
-  // const handleKeyPress = (e) => {
-  //   if (e.key === 'Enter') {
-  //     handleSearchClick();
-  //   }
-  // };
   return (
     <StContainer>
       <h2>매장찾기</h2>
@@ -237,7 +259,7 @@ const MapContainer = () => {
         <StMap id="map" />
         <StSearchBox>
           <p>찾으실 매장을 검색해주세요</p>
-          <form onSubmit={handleSearchClick}>
+          <form onSubmit={handleKeyPress}>
             <input
               type="text"
               id="keyword"
@@ -251,16 +273,13 @@ const MapContainer = () => {
 
           <StListBox>
             <ul>
-              {placesList.length > 0 ? (
-                placesList.map((place, index) => (
-                  <StItem key={index} onClick={() => handleClickPlace(index)}>
-                    <h5>{place.place_name}</h5>
-                    <p>{place.address_name}</p>
-                  </StItem>
-                ))
-              ) : (
-                <p>검색 결과가 없습니다.</p>
-              )}
+              {searchedOnce && placesList.length === 0 && <p>검색 결과가 없습니다.</p>}
+              {placesList.map((place, index) => (
+                <PlaceItem key={index} onClick={() => handleClickPlace(index)}>
+                  <h5>{place.place_name}</h5>
+                  <p>{place.address_name}</p>
+                </PlaceItem>
+              ))}
             </ul>
 
             {pagination && (
