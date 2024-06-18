@@ -1,22 +1,104 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  margin: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f0f0f0;
+const StContainer = styled.div`
+  height: 500px;
+  padding: 56px 0;
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 58px;
+  }
 `;
 
-const PlaceItem = styled.div`
-  margin: 3px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  cursor: pointer;
+const StMapWrap = styled.div`
+  position: relative;
+  width: 100%;
+  height: 607px;
+`;
 
+const StMap = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+`;
+
+const StSearchBox = styled.div`
+  position: absolute;
+  top: 56px;
+  left: 44px;
+  width: 332px;
+  height: 446px;
+  padding: 30px 0;
+  border: 1px solid #eceef6;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  z-index: 10;
+  > p {
+    color: #333;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+  form {
+    position: relative;
+    height: 45px;
+    padding: 0 20px;
+    input {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #eceef6;
+      border-radius: 8px;
+      padding: 8px 13px;
+      box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+      &:focus {
+        outline: none;
+      }
+    }
+    button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 20px;
+    }
+  }
+`;
+const StListBox = styled.div`
+  position: absolute;
+  top: 145px;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 20px;
+  overflow-y: auto;
+`;
+const StItem = styled.li`
+  padding: 24px;
+  cursor: pointer;
+  h5 {
+    margin-bottom: 10px;
+    color: #232323;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  p {
+    color: #b0b0b0;
+    font-size: 13px;
+  }
   &:hover {
-    background-color: #e0e0e0;
+    background-color: #f7f7f7;
+  }
+`;
+const StPagination = styled.div`
+  text-align: center;
+  button {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
   }
 `;
 
@@ -135,6 +217,7 @@ const MapContainer = () => {
   };
 
   const handleInputChange = (e) => {
+    e.preventDefault();
     setSearchTerm(e.target.value);
   };
 
@@ -142,48 +225,57 @@ const MapContainer = () => {
     searchPlaces(searchTerm);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearchClick();
-    }
-  };
-
+  // const handleKeyPress = (e) => {
+  //   if (e.key === 'Enter') {
+  //     handleSearchClick();
+  //   }
+  // };
   return (
-    <Container>
-      <input
-        type="text"
-        id="keyword"
-        value={searchTerm}
-        onChange={handleInputChange}
-        onKeyPress={handleKeyPress}
-        placeholder="검색어를 입력하세요"
-      />
-      <button onClick={handleSearchClick}>검색</button>
-      <div style={{ width: '100%', height: '400px' }}>
-        <div id="map" style={{ width: '100%', height: '100%' }} />
-      </div>
-      <div style={{ marginTop: '10px' }}>
-        {placesList.length > 0 ? (
-          placesList.map((place, index) => (
-            <PlaceItem key={index} onClick={() => handleClickPlace(index)}>
-              <h5>{place.place_name}</h5>
-              <p>{place.address_name}</p>
-            </PlaceItem>
-          ))
-        ) : (
-          <p>검색 결과가 없습니다.</p>
-        )}
-      </div>
-      {pagination && (
-        <div style={{ marginTop: '10px' }}>
-          {[...Array(pagination.last)].map((_, index) => (
-            <button key={index + 1} onClick={() => pagination.gotoPage(index + 1)}>
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      )}
-    </Container>
+    <StContainer>
+      <h2>매장찾기</h2>
+      <StMapWrap>
+        <StMap id="map" />
+        <StSearchBox>
+          <p>찾으실 매장을 검색해주세요</p>
+          <form onSubmit={handleSearchClick}>
+            <input
+              type="text"
+              id="keyword"
+              value={searchTerm}
+              onChange={handleInputChange}
+              // onKeyPress={handleKeyPress}
+              placeholder="Search..."
+            />
+            <button type="submit">검색</button>
+          </form>
+
+          <StListBox>
+            <ul>
+              {placesList.length > 0 ? (
+                placesList.map((place, index) => (
+                  <StItem key={index} onClick={() => handleClickPlace(index)}>
+                    <h5>{place.place_name}</h5>
+                    <p>{place.address_name}</p>
+                  </StItem>
+                ))
+              ) : (
+                <p>검색 결과가 없습니다.</p>
+              )}
+            </ul>
+
+            {pagination && (
+              <StPagination style={{ marginTop: '10px' }}>
+                {[...Array(pagination.last)].map((_, index) => (
+                  <button key={index + 1} onClick={() => pagination.gotoPage(index + 1)}>
+                    {index + 1}
+                  </button>
+                ))}
+              </StPagination>
+            )}
+          </StListBox>
+        </StSearchBox>
+      </StMapWrap>
+    </StContainer>
   );
 };
 
