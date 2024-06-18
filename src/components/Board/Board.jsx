@@ -1,6 +1,114 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import supabase from '@/supabase/supabaseClient';
+
+const StcontainerBox = styled.div`
+  width: 1400px;
+  height: 816px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 24px;
+  padding: 48px 0 32px;
+}
+`;
+const Stbutton = styled.button`
+  width: 60px;
+  height: 60px;
+  flex-grow: 0;
+  padding: 15px;
+  border: solid 0 #e5e7eb;
+  background-color: #3b7dff;
+  border-radius: 60px;
+  position: fixed;
+  top: 609px;
+  right: 174px;
+
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+`;
+
+const StcontentBox = styled.div`
+  height: 166px;
+  align-self: stretch;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: #11151b;
+  & > span:nth-child(1) {
+    height: 24px;
+    flex-grow: 1;
+    font-family: Pretendard;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+  }
+  & > span:nth-child(2) {
+    height: 19px;
+    flex-grow: 1;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #727272;
+  }
+`;
+const StspanDiv = styled.div`
+  width: 140px;
+  height: 51px;
+  flex-grow: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 0 0;
+  & > span:nth-child(1) {
+    width: 42px;
+    height: 19px;
+    flex-grow: 0;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #fff;
+  }
+  & > span:nth-child(2) {
+    width: 82px;
+    height: 19px;
+    flex-grow: 0;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #727272;
+  }
+`;
 const Board = () => {
   const [posts, setPosts] = useState([]);
 
@@ -20,20 +128,24 @@ const Board = () => {
   const handleAdd = () => {
     navigate('1');
   };
+  const truncate = (str, n) => {
+    return str?.length > n ? str.substr(0, n - 1) + '...' : str;
+  };
 
   return (
-    <div>
-      <h1>게시판</h1>
-      <button onClick={handleAdd}>게시글 추가</button>
+    <StcontainerBox>
       {posts.map((post) => (
-        <div key={post.id}>
-          <div>{post.name}</div>
-          <div>{post.title}</div>
-          <div>{post.content}</div>
-          <div>{post.created_at}</div>
-        </div>
+        <StcontentBox key={post.id}>
+          <span>{truncate(post.title, 30)}</span>
+          <span>{truncate(post.content, 30)}</span>
+          <StspanDiv>
+            <span>{post.name}</span>
+            <span>{post.created_at}</span>
+          </StspanDiv>
+        </StcontentBox>
       ))}
-    </div>
+      <Stbutton onClick={handleAdd}>+</Stbutton>
+    </StcontainerBox>
   );
 };
 
