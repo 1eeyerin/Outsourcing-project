@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home, Menu } from '@/pages';
+import { Home, Menu, MapPage } from '@/pages';
 import Layout from '@/components/Layout';
 
 const router = createBrowserRouter([
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
             element: <Menu />
           }
         ]
+      },
+      {
+        path: '/MapPage',
+        element: <MapPage />
       }
     ]
   }
