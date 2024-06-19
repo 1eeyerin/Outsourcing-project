@@ -99,7 +99,7 @@ const StspanDiv = styled.div`
     height: 19px;
     flex-grow: 0;
     font-family: Pretendard;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
@@ -128,19 +128,20 @@ const Board = () => {
   const handleAdd = () => {
     navigate('1');
   };
-  const truncate = (str, n) => {
-    return str?.length > n ? str.substr(0, n - 1) + '...' : str;
-  };
 
+  const getDate = (date) => {
+    const newDate = new Date(date);
+    return `${newDate.getFullYear()}. ${newDate.getMonth() > 10 ? '' : '0'}${newDate.getMonth() + 1}. ${newDate.getDate() > 9 ? '' : '0'}${newDate.getDate()}`;
+  };
   return (
     <StcontainerBox>
       {posts.map((post) => (
         <StcontentBox key={post.id}>
-          <span>{truncate(post.title, 30)}</span>
-          <span>{truncate(post.content, 30)}</span>
+          <span>{post.title}</span>
+          <span>{post.content}</span>
           <StspanDiv>
             <span>{post.name}</span>
-            <span>{post.created_at}</span>
+            <span>{getDate(post.created_at)}</span>
           </StspanDiv>
         </StcontentBox>
       ))}
