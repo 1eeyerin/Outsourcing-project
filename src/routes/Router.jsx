@@ -12,7 +12,7 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'Feedback',
+        path: 'feedback',
         element: <Feedback />
       }
     ]
