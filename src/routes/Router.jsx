@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home, Feedback } from '@/pages';
+import { Home, Menu, Store, Feedback } from '@/pages';
 import Layout from '@/components/Layout';
 
 const router = createBrowserRouter([
@@ -11,6 +11,20 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />
       },
+      {
+        path: 'menu',
+        element: <Menu />,
+        children: [
+          {
+            path: ':category',
+            element: <Menu />
+          }
+        ]
+      },
+      {
+        path: '/store',
+        element: <Store />
+      },      
       {
         path: 'feedback',
         element: <Feedback />
