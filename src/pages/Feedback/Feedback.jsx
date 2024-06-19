@@ -26,7 +26,7 @@ const Stspan = styled.span`
   text-align: left;
   color: #fff;
 `;
-const Customer = () => {
+const Feedback = () => {
   return (
     <Stcontainer>
       <Sttitlediv>
@@ -37,4 +37,4 @@ const Customer = () => {
   );
 };
 
-export default Customer;
+export default Feedback;

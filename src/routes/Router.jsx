@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home, Customer } from '@/pages';
+import { Home, Feedback } from '@/pages';
 import Layout from '@/components/Layout';
 
 const router = createBrowserRouter([
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
         element: <Home />
       },
       {
-        path: 'customer',
-        element: <Customer />
+        path: 'Feedback',
+        element: <Feedback />
       }
     ]
   }
