@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
 
-const MapContainer = () => {
+const StoreContainer = () => {
   const [map, setMap] = useState(null);
   const [infowindow, setInfowindow] = useState(null);
   const [ps, setPs] = useState(null);
@@ -99,7 +99,8 @@ const MapContainer = () => {
     const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
     const marker = new window.kakao.maps.Marker({
       position: position,
-      image: markerImage
+      image: markerImage,
+      title: title
     });
 
     marker.setMap(map);
@@ -109,7 +110,7 @@ const MapContainer = () => {
   };
 
   const displayInfowindow = (marker, title) => {
-    infowindow.setContent(`<div style="padding:5px;z-index:1;">${title}</div>`);
+    infowindow.setContent(`<div style="padding:5px;color:#333333;">${title}</div>`);
     infowindow.open(map, marker);
   };
 
@@ -124,6 +125,7 @@ const MapContainer = () => {
     const marker = markers[index];
     map.panTo(marker.getPosition());
     displayInfowindow(marker, marker.getTitle());
+    console.log(marker);
   };
 
   const handleInputChange = (e) => {
@@ -148,7 +150,7 @@ const MapContainer = () => {
       <StMapWrap>
         <StMap id="map" />
         <StSearchBox>
-          <p>찾으실 매장을 검색해주세요</p>
+          <StParagraph>찾으실 매장을 검색해주세요</StParagraph>
           <StForm onSubmit={(e) => e.preventDefault()}>
             <StInput
               type="text"
@@ -161,22 +163,24 @@ const MapContainer = () => {
           </StForm>
 
           <StListBox>
-            <ul>
-              {searchedOnce && placesList.length === 0 && <p>검색 결과가 없습니다.</p>}
-              {placesList.map((place, index) => (
-                <StItem key={index} onClick={() => handleClickPlace(index)}>
-                  <h5>{place.place_name}</h5>
-                  <StParagraph>{place.address_name}</StParagraph>
-                </StItem>
-              ))}
-            </ul>
+            <>
+              {searchedOnce && placesList.length === 0 && <StParagraph>검색 결과가 없습니다.</StParagraph>}
+              <ul>
+                {placesList.map((place, index) => (
+                  <StItem key={index} onClick={() => handleClickPlace(index)}>
+                    <StItemTitle>{place.place_name}</StItemTitle>
+                    <StItemAdress>{place.address_name}</StItemAdress>
+                  </StItem>
+                ))}
+              </ul>
+            </>
 
             {pagination && (
               <StPagination style={{ marginTop: '10px' }}>
                 {[...Array(pagination.last)].map((_, index) => (
-                  <button key={index + 1} onClick={() => pagination.gotoPage(index + 1)}>
+                  <StButton key={index + 1} onClick={() => pagination.gotoPage(index + 1)}>
                     {index + 1}
-                  </button>
+                  </StButton>
                 ))}
               </StPagination>
             )}
@@ -281,31 +285,31 @@ const StItem = styled.li`
   padding: 24px;
   cursor: pointer;
 
-  h5 {
-    margin-bottom: 10px;
-    color: #232323;
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  p {
-    color: #b0b0b0;
-    font-size: 13px;
-  }
-
   &:hover {
     background-color: #f7f7f7;
   }
 `;
 
-const StPagination = styled.div`
-  text-align: center;
-
-  button {
-    border: none;
-    background-color: inherit;
-    cursor: pointer;
-  }
+const StItemTitle = styled.h5`
+  margin-bottom: 10px;
+  color: #232323;
+  font-size: 16px;
+  font-weight: 700;
 `;
 
-export default MapContainer;
+const StItemAdress = styled.p`
+  color: #b0b0b0;
+  font-size: 13px;
+`;
+
+const StPagination = styled.div`
+  text-align: center;
+`;
+
+const StButton = styled.button`
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+`;
+
+export default StoreContainer;

@@ -1,4 +1,4 @@
-import StoreContainer from '@/components/StoreContainer';
+import StoreContainer from '@/components/Store/StoreContainer';
 
 const Store = () => {
   return <StoreContainer />;
