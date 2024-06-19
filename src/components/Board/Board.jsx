@@ -1,8 +1,47 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import supabase from '@/supabase/supabaseClient';
+import { ellipsisStyle } from '@/styles/utils';
+import { showFeedback } from '@/supabase/feedback';
 
+const Board = () => {
+  const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
+
+  const showFeedbackData = async () => {
+    const getData = await showFeedback();
+    setPosts(getData);
+  };
+
+  const getDate = (date) => {
+    const newDate = new Date(date);
+    return `${newDate.getFullYear()}. ${newDate.getMonth() > 10 ? '' : '0'}${newDate.getMonth() + 1}. ${newDate.getDate() > 9 ? '' : '0'}${newDate.getDate()}`;
+  };
+
+  const handleAdd = () => {
+    navigate('/feedback/write');
+  };
+
+  useEffect(() => {
+    showFeedbackData();
+  }, []);
+
+  return (
+    <StcontainerBox>
+      {posts.map((post) => (
+        <StcontentBox key={post.id}>
+          <span>{post.title}</span>
+          <span>{post.content}</span>
+          <StspanDiv>
+            <span>{post.name}</span>
+            <span>{getDate(post.created_at)}</span>
+          </StspanDiv>
+        </StcontentBox>
+      ))}
+      <Stbutton onClick={handleAdd}>+</Stbutton>
+    </StcontainerBox>
+  );
+};
 const StcontainerBox = styled.div`
   width: 1400px;
   height: 816px;
@@ -24,50 +63,40 @@ const Stbutton = styled.button`
   background-color: #3b7dff;
   border-radius: 60px;
   position: fixed;
-  top: 609px;
+  bottom: 40px;
   right: 174px;
-
   font-size: 24px;
   font-weight: bold;
   color: #fff;
 `;
 
 const StcontentBox = styled.div`
-  height: 166px;
   align-self: stretch;
   flex-grow: 0;
   display: flex;
+  gap: 10px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding: 32px;
   border-radius: 12px;
   background-color: #11151b;
+
   & > span:nth-child(1) {
-    height: 24px;
     flex-grow: 1;
     font-family: Pretendard;
     font-size: 20px;
     font-weight: bold;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
     color: #fff;
+    ${ellipsisStyle(1)}
   }
   & > span:nth-child(2) {
-    height: 19px;
     flex-grow: 1;
     font-family: Pretendard;
     font-size: 16px;
     font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
     color: #727272;
+    ${ellipsisStyle(1)}
   }
 `;
 const StspanDiv = styled.div`
@@ -80,74 +109,27 @@ const StspanDiv = styled.div`
   align-items: center;
   gap: 16px;
   padding: 32px 0 0;
+
   & > span:nth-child(1) {
-    width: 42px;
-    height: 19px;
+    max-width: 1230px;
     flex-grow: 0;
     font-family: Pretendard;
     font-size: 16px;
     font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
     color: #fff;
+    flex-shrink: 0;
+
+    ${ellipsisStyle(1)}
   }
   & > span:nth-child(2) {
-    width: 82px;
-    height: 19px;
+    flex-shrink: 0;
     flex-grow: 0;
     font-family: Pretendard;
     font-size: 14px;
     font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
     color: #727272;
+    ${ellipsisStyle(1)}
   }
 `;
-const Board = () => {
-  const [posts, setPosts] = useState([]);
-
-  const navigate = useNavigate();
-
-  // 초기 데이터 로딩
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  // 게시글 불러오기
-  const fetchPosts = async () => {
-    let { data, error } = await supabase.from('feedback').select('*').order('created_at', { ascending: false });
-    if (error) console.log('게시글 불러오기 에러:', error);
-    else setPosts(data);
-  };
-  const handleAdd = () => {
-    navigate('/feedback/write');
-  };
-
-  const getDate = (date) => {
-    const newDate = new Date(date);
-    return `${newDate.getFullYear()}. ${newDate.getMonth() > 10 ? '' : '0'}${newDate.getMonth() + 1}. ${newDate.getDate() > 9 ? '' : '0'}${newDate.getDate()}`;
-  };
-  return (
-    <StcontainerBox>
-      {posts.map((post) => (
-        <StcontentBox key={post.id}>
-          <span>{post.title}</span>
-          <span>{post.content}</span>
-          <StspanDiv>
-            <span>{post.name}</span>
-            <span>{getDate(post.created_at)}</span>
-          </StspanDiv>
-        </StcontentBox>
-      ))}
-      <Stbutton onClick={handleAdd}>+</Stbutton>
-    </StcontainerBox>
-  );
-};
 
 export default Board;
