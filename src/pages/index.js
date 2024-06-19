@@ -1,3 +1,4 @@
 export { default as Home } from './Home';
-export { default as MapPage } from './MapPage';
+export { default as Menu } from './Menu';
+export { default as Store } from './Store';
 export { FeedbackForm, PasswordCheck, FeedbackDetail } from './Feedback';
