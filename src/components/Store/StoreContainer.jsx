@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
+import iconSearch from '@/assets/icons/icon_search.svg';
 
 const StoreContainer = () => {
   const [map, setMap] = useState(null);
@@ -11,33 +12,6 @@ const StoreContainer = () => {
   const [searchTerm, setSearchTerm] = useState('1943');
   const [pagination, setPagination] = useState(null);
   const [searchedOnce, setSearchedOnce] = useState(false);
-
-  useEffect(() => {
-    const loadMap = () => {
-      window.kakao.maps.load(() => {
-        const mapInstance = new window.kakao.maps.Map(document.getElementById('map'), {
-          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-          level: 3
-        });
-        setMap(mapInstance);
-        setInfowindow(new window.kakao.maps.InfoWindow({ zIndex: 1 }));
-        setPs(new window.kakao.maps.services.Places());
-      });
-    };
-
-    loadMap();
-  }, []);
-
-  useEffect(() => {
-    if (ps && searchTerm) {
-      const debouncedSearch = debounce(searchPlaces, 1000); // debounce 함수로 searchPlaces 함수를 2초 지연시킵니다.
-      debouncedSearch(searchTerm); // 검색어가 변경될 때마다 debouncedSearch 함수를 호출합니다.
-
-      return () => {
-        debouncedSearch.cancel(); // cleanup 함수에서 debounce된 함수를 취소합니다.
-      };
-    }
-  }, [ps, searchTerm]);
 
   const searchPlaces = (keyword) => {
     if (!keyword.trim()) {
@@ -98,9 +72,9 @@ const StoreContainer = () => {
 
     const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions);
     const marker = new window.kakao.maps.Marker({
-      position: position,
+      position,
       image: markerImage,
-      title: title
+      title
     });
 
     marker.setMap(map);
@@ -125,7 +99,6 @@ const StoreContainer = () => {
     const marker = markers[index];
     map.panTo(marker.getPosition());
     displayInfowindow(marker, marker.getTitle());
-    console.log(marker);
   };
 
   const handleInputChange = (e) => {
@@ -143,6 +116,34 @@ const StoreContainer = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const loadMap = () => {
+      window.kakao.maps.load(() => {
+        const mapInstance = new window.kakao.maps.Map(document.getElementById('map'), {
+          center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
+          level: 3
+        });
+        setMap(mapInstance);
+        setInfowindow(new window.kakao.maps.InfoWindow({ zIndex: 1 }));
+        setPs(new window.kakao.maps.services.Places());
+      });
+    };
+
+    loadMap();
+  }, []);
+
+  useEffect(() => {
+    if (ps && searchTerm) {
+      const debouncedSearch = debounce(searchPlaces, 1000); // debounce 함수로 searchPlaces 함수를 2초 지연시킵니다.
+      debouncedSearch(searchTerm); // 검색어가 변경될 때마다 debouncedSearch 함수를 호출합니다.
+
+      return () => {
+        debouncedSearch.cancel(); // cleanup 함수에서 debounce된 함수를 취소합니다.
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ps, searchTerm]);
 
   return (
     <StContainer>
@@ -176,9 +177,9 @@ const StoreContainer = () => {
             </>
 
             {pagination && (
-              <StPagination style={{ marginTop: '10px' }}>
+              <StPagination>
                 {[...Array(pagination.last)].map((_, index) => (
-                  <StButton key={index + 1} onClick={() => pagination.gotoPage(index + 1)}>
+                  <StButton key={index + 1} onClick={() => pagination.gotoPage(index + 1)} type="button">
                     {index + 1}
                   </StButton>
                 ))}
@@ -232,6 +233,7 @@ const StSearchBox = styled.div`
 `;
 
 const StParagraph = styled.p`
+  line-height: 18px;
   color: #333333;
   font-size: 15px;
   font-weight: 700;
@@ -241,7 +243,7 @@ const StParagraph = styled.p`
 
 const StForm = styled.form`
   position: relative;
-  height: 45px;
+  height: 43px;
   padding: 0 20px;
 `;
 
@@ -250,17 +252,23 @@ const StInput = styled.input`
   height: 100%;
   border: 1px solid #eceef6;
   border-radius: 8px;
-  padding: 8px 13px;
+  padding: 8px 13px 8px 41px;
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+  background: url(${iconSearch}) no-repeat 15px / 18px 18px;
 
   &:focus {
     outline: none;
+  }
+
+  &::placeholder {
+    color: #c4c4c4;
+    font-size: 16px;
   }
 `;
 
 const StListBox = styled.div`
   position: absolute;
-  top: 145px;
+  top: 135px;
   bottom: 0;
   width: 100%;
   padding-bottom: 20px;
