@@ -59,7 +59,6 @@ const StMenuTitle = styled.h4`
   font-size: 28px;
   font-weight: 800;
   line-height: 1.4;
-  text-align: left;
   color: #000000;
 `;
 
