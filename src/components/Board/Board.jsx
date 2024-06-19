@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import supabase from '@/supabase/supabaseClient';
 
@@ -13,7 +13,6 @@ const StcontainerBox = styled.div`
   align-items: stretch;
   gap: 24px;
   padding: 48px 0 32px;
-}
 `;
 const Stbutton = styled.button`
   width: 60px;
@@ -32,7 +31,7 @@ const Stbutton = styled.button`
   color: #fff;
 `;
 
-const StcontentBox = styled.div`
+const StcontentBox = styled(Link)`
   height: 166px;
   align-self: stretch;
   flex-grow: 0;
@@ -136,7 +135,7 @@ const Board = () => {
   return (
     <StcontainerBox>
       {posts.map((post) => (
-        <StcontentBox key={post.id}>
+        <StcontentBox key={post.id} to={`/feedback/${post.id}/password-check`}>
           <span>{post.title}</span>
           <span>{post.content}</span>
           <StspanDiv>

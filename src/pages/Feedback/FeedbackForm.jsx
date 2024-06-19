@@ -1,16 +1,19 @@
-import { useParams } from 'react-router-dom';
-import isEmpty from 'lodash/isEmpty';
+import { useNavigate, useParams } from 'react-router-dom';
+import { isEmpty } from 'lodash';
 import styled, { css } from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
 import Textarea from '@/components/Textarea';
 import { useAddFeedback, useGetFeedbackFromQueries, useUpdateFeedback } from '@/stores/queries/useFeedbackQueries';
+import FeedbackError from './FeedbackError';
 
 const FeedbackForm = () => {
   const { id } = useParams();
   const isEdit = !!id;
+  const navigate = useNavigate();
   const data = useGetFeedbackFromQueries(id);
-  const { mutate: updateMutation } = useUpdateFeedback(id);
+  const { mutate: updateMutation } = useUpdateFeedback(id, { enabled: !isEdit });
+  const { mutate: addMutation } = useAddFeedback({ enabled: isEdit });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,35 +31,32 @@ const FeedbackForm = () => {
       return;
     }
 
-    const fetchQueries = isEdit ? updateMutation : useAddFeedback;
+    const fetchQueries = isEdit ? updateMutation : addMutation;
     fetchQueries({ name, email, password, title, content });
   };
 
   if (isEdit && isEmpty(data)) {
-    return (
-      <StEmptyText>
-        올바르지 않은 접근이에요
-        <br />
-        다시 시도해주세요
-      </StEmptyText>
-    );
+    return <FeedbackError />;
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <StInputs>
         <StInputRow>
-          <Input placeholder="닉네임" name="name" defaultValue={data?.name} readOnly={isEdit} />
-          <Input type="email" placeholder="이메일" name="email" defaultValue={data?.email} readOnly={isEdit} />
+          <Input placeholder="닉네임" name="name" defaultValue={data.name} readOnly={isEdit} />
+          <Input type="email" placeholder="이메일" name="email" defaultValue={data.email} readOnly={isEdit} />
           <Input type="password" placeholder="비밀번호" name="password" required={isEdit} />
           <Input type="password" placeholder="비밀번호 확인" name="passwordConfirm" required={isEdit} />
         </StInputRow>
-        <Input placeholder="제목" css={inputStyle} name="title" defaultValue={data?.title} required={isEdit} />
-        <Textarea placeholder="내용" name="content" defaultValue={data?.content} required={isEdit} />
+        <Input placeholder="제목" css={inputStyle} name="title" defaultValue={data.title} required={isEdit} />
+        <Textarea placeholder="내용" name="content" defaultValue={data.content} required={isEdit} />
       </StInputs>
       <StButtons>
+        <Button type="button" variant="rounded" onClick={() => navigate(-1)}>
+          뒤로가기
+        </Button>
         <Button type="submit" variant="rounded">
-          작성하기
+          {isEdit ? '수정하기' : '작성하기'}
         </Button>
       </StButtons>
     </form>
@@ -65,8 +65,9 @@ const FeedbackForm = () => {
 
 const StButtons = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 48px;
+  gap: 16px;
 `;
 
 const StInputs = styled.div`
@@ -87,12 +88,6 @@ const StInputRow = styled.div`
 
 const inputStyle = css`
   width: 100%;
-`;
-
-const StEmptyText = styled.div`
-  margin-top: 48px;
-  text-align: center;
-  line-height: 1.4;
 `;
 
 export default FeedbackForm;
