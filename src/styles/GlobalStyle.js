@@ -27,5 +27,9 @@ const GlobalStyle = createGlobalStyle`
   img {
     max-width: 100%;
   }
+
+  button {
+    cursor: pointer;
+  }
 `;
 export default GlobalStyle;
