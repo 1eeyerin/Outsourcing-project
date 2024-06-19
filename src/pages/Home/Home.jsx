@@ -8,7 +8,6 @@ import supabase from '@/supabase/supabaseClient';
 const Home = () => {
   const [menus, setMenus] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const loadMenus = async () => {
@@ -20,7 +19,6 @@ const Home = () => {
         setMenus(data);
       } catch (error) {
         console.error('Error loading menus:', error);
-        setIsError(true);
       } finally {
         setIsLoading(false);
       }
@@ -29,8 +27,7 @@ const Home = () => {
     loadMenus();
   }, []);
 
-  if (isLoading) return <Loading>Loading...</Loading>;
-  if (isError) return <Error>Error loading menus</Error>;
+  if (isLoading) return null;
 
   return (
     <StContainer>
@@ -46,7 +43,7 @@ const Home = () => {
             <br />
             in a Classic Atmosphere
           </StIntroText2>
-          <Button as={Link} to="/store" aria-label="Find Store">
+          <Button href="/store" aria-label="Find Store">
             매장찾기
           </Button>
         </StIntroSection>
@@ -176,23 +173,6 @@ const StSpaceImage = styled.img`
   flex: 1;
   margin: 0 ${spacing.small} 0 0;
   max-height: 100%;
-`;
-
-const Loading = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 24px;
-`;
-
-const Error = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 24px;
-  color: red;
 `;
 
 export default Home;
