@@ -1,2 +1,2 @@
 export { default as Home } from './Home';
-export { default as MapPage } from './MapPage';
+export { default as Store } from './Store';
