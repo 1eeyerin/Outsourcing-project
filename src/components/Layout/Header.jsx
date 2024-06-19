@@ -16,7 +16,7 @@ const Header = () => {
             <Link to="/menu">메뉴</Link>
           </li>
           <li>
-            <Link to="/MapPage">매장찾기</Link>
+            <Link to="/store">매장찾기</Link>
           </li>
           <li>
             <Link to="/customer-voice">고객의소리</Link>

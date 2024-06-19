@@ -1,122 +1,6 @@
 import { useState, useEffect } from 'react';
+import debounce from 'lodash/debounce';
 import styled from 'styled-components';
-
-const StContainer = styled.div`
-  height: 500px;
-  padding: 56px 0;
-  h2 {
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 58px;
-  }
-`;
-
-const StMapWrap = styled.div`
-  position: relative;
-  width: 100%;
-  height: 607px;
-`;
-
-const StMap = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 15px;
-`;
-
-const StSearchBox = styled.div`
-  position: absolute;
-  top: 56px;
-  left: 44px;
-  width: 332px;
-  height: 446px;
-  padding: 30px 0;
-  border: 1px solid #eceef6;
-  border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
-  overflow: hidden;
-  z-index: 10;
-
-  > p {
-    color: #333;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 0 20px;
-    margin-bottom: 20px;
-  }
-
-  form {
-    position: relative;
-    height: 45px;
-    padding: 0 20px;
-
-    input {
-      width: 100%;
-      height: 100%;
-      border: 1px solid #eceef6;
-      border-radius: 8px;
-      padding: 8px 13px;
-      box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
-
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-`;
-
-const StListBox = styled.div`
-  position: absolute;
-  top: 145px;
-  bottom: 0;
-  width: 100%;
-  padding-bottom: 20px;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    width: 10px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #a8a8a8;
-  }
-  &::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-    border-radius: 10px;
-  }
-`;
-
-const StItem = styled.li`
-  padding: 24px;
-  cursor: pointer;
-
-  h5 {
-    margin-bottom: 10px;
-    color: #232323;
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  p {
-    color: #b0b0b0;
-    font-size: 13px;
-  }
-
-  &:hover {
-    background-color: #f7f7f7;
-  }
-`;
-
-const StPagination = styled.div`
-  text-align: center;
-
-  button {
-    border: none;
-    background-color: inherit;
-    cursor: pointer;
-  }
-`;
 
 const MapContainer = () => {
   const [map, setMap] = useState(null);
@@ -146,9 +30,14 @@ const MapContainer = () => {
 
   useEffect(() => {
     if (ps && searchTerm) {
-      searchPlaces(searchTerm);
+      const debouncedSearch = debounce(searchPlaces, 1000); // debounce 함수로 searchPlaces 함수를 2초 지연시킵니다.
+      debouncedSearch(searchTerm); // 검색어가 변경될 때마다 debouncedSearch 함수를 호출합니다.
+
+      return () => {
+        debouncedSearch.cancel(); // cleanup 함수에서 debounce된 함수를 취소합니다.
+      };
     }
-  }, [ps]);
+  }, [ps, searchTerm]);
 
   const searchPlaces = (keyword) => {
     if (!keyword.trim()) {
@@ -255,13 +144,13 @@ const MapContainer = () => {
 
   return (
     <StContainer>
-      <h2>매장찾기</h2>
+      <StHeading>매장찾기</StHeading>
       <StMapWrap>
         <StMap id="map" />
         <StSearchBox>
           <p>찾으실 매장을 검색해주세요</p>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <input
+          <StForm onSubmit={(e) => e.preventDefault()}>
+            <StInput
               type="text"
               id="keyword"
               value={searchTerm}
@@ -269,7 +158,7 @@ const MapContainer = () => {
               onKeyPress={handleKeyPress}
               placeholder="Search..."
             />
-          </form>
+          </StForm>
 
           <StListBox>
             <ul>
@@ -277,7 +166,7 @@ const MapContainer = () => {
               {placesList.map((place, index) => (
                 <StItem key={index} onClick={() => handleClickPlace(index)}>
                   <h5>{place.place_name}</h5>
-                  <p>{place.address_name}</p>
+                  <StParagraph>{place.address_name}</StParagraph>
                 </StItem>
               ))}
             </ul>
@@ -297,5 +186,126 @@ const MapContainer = () => {
     </StContainer>
   );
 };
+
+const StContainer = styled.div`
+  height: 500px;
+  padding: 56px 0;
+`;
+
+const StHeading = styled.h2`
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 58px;
+`;
+
+const StMapWrap = styled.div`
+  position: relative;
+  width: 100%;
+  height: 607px;
+`;
+
+const StMap = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+`;
+
+const StSearchBox = styled.div`
+  position: absolute;
+  top: 56px;
+  left: 44px;
+  width: 332px;
+  height: 446px;
+  padding: 30px 0;
+  border: 1px solid #eceef6;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  z-index: 10;
+`;
+
+const StParagraph = styled.p`
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 20px;
+  margin-bottom: 20px;
+`;
+
+const StForm = styled.form`
+  position: relative;
+  height: 45px;
+  padding: 0 20px;
+`;
+
+const StInput = styled.input`
+  width: 100%;
+  height: 100%;
+  border: 1px solid #eceef6;
+  border-radius: 8px;
+  padding: 8px 13px;
+  box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const StListBox = styled.div`
+  position: absolute;
+  top: 145px;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 20px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #a8a8a8;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+  }
+`;
+
+const StItem = styled.li`
+  padding: 24px;
+  cursor: pointer;
+
+  h5 {
+    margin-bottom: 10px;
+    color: #232323;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  p {
+    color: #b0b0b0;
+    font-size: 13px;
+  }
+
+  &:hover {
+    background-color: #f7f7f7;
+  }
+`;
+
+const StPagination = styled.div`
+  text-align: center;
+
+  button {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
+`;
 
 export default MapContainer;
