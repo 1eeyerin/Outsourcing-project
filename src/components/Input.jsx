@@ -11,8 +11,8 @@ import styled from 'styled-components';
  * <Input type="email" placeholder="이메일을 입력하세요" />
  */
 
-const Input = forwardRef(({ type = 'text', ...props }, ref) => {
-  return <StInput type={type} {...props} ref={ref} />;
+const Input = forwardRef(({ type = 'text', css, ...props }, ref) => {
+  return <StInput type={type} $css={css} {...props} ref={ref} />;
 });
 
 const StInput = styled.input`
@@ -30,6 +30,8 @@ const StInput = styled.input`
     font: small-caption;
     font-size: 34px;
   }
+
+  ${(props) => props.css};
 `;
 
 Input.displayName = 'Input';
