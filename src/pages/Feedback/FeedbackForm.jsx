@@ -1,23 +1,16 @@
 import { useParams } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import isEmpty from 'lodash/isEmpty';
 import styled, { css } from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
 import Textarea from '@/components/Textarea';
-import { updateFeedback } from '@/supabase/feedback';
+import { useAddFeedback, useGetFeedbackFromQueries, useUpdateFeedback } from '@/stores/queries/useFeedbackQueries';
 
 const FeedbackForm = () => {
   const { id } = useParams();
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData(['feedback', id])?.[0] || {};
-
-  const { mutate: updateMutation } = useMutation({
-    mutationFn: (content) => updateFeedback({ id, content }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['feedback', id] });
-    },
-    enabled: !!id
-  });
+  const isEdit = !!id;
+  const data = useGetFeedbackFromQueries(id);
+  const { mutate: updateMutation } = useUpdateFeedback(id);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,30 +19,40 @@ const FeedbackForm = () => {
     const { name, email, password, passwordConfirm, title, content } = Object.fromEntries(formData.entries());
 
     if (password !== passwordConfirm) {
-      alert('비밀번호가 일치하지 않아요.');
+      alert('비밀번호가 일치하지 않아요');
       return;
     }
 
-    // TODO : 생성할땐 제외
-    if (password !== data.password) {
-      alert('작성하신 비밀번호가 아니에요.');
+    if (isEdit && password !== data.password) {
+      alert('작성하신 비밀번호가 아니에요');
       return;
     }
 
-    updateMutation({ name, email, password, title, content });
+    const fetchQueries = isEdit ? updateMutation : useAddFeedback;
+    fetchQueries({ name, email, password, title, content });
   };
+
+  if (isEdit && isEmpty(data)) {
+    return (
+      <StEmptyText>
+        올바르지 않은 접근이에요
+        <br />
+        다시 시도해주세요
+      </StEmptyText>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit}>
       <StInputs>
         <StInputRow>
-          <Input placeholder="닉네임" name="name" defaultValue={data?.name} readOnly />
-          <Input type="email" placeholder="이메일" name="email" defaultValue={data?.email} readOnly />
-          <Input type="password" placeholder="비밀번호" name="password" required />
-          <Input type="password" placeholder="비밀번호 확인" name="passwordConfirm" required />
+          <Input placeholder="닉네임" name="name" defaultValue={data?.name} readOnly={isEdit} />
+          <Input type="email" placeholder="이메일" name="email" defaultValue={data?.email} readOnly={isEdit} />
+          <Input type="password" placeholder="비밀번호" name="password" required={isEdit} />
+          <Input type="password" placeholder="비밀번호 확인" name="passwordConfirm" required={isEdit} />
         </StInputRow>
-        <Input placeholder="제목" css={inputStyle} name="title" defaultValue={data?.title} required />
-        <Textarea placeholder="내용" name="content" defaultValue={data?.content} required />
+        <Input placeholder="제목" css={inputStyle} name="title" defaultValue={data?.title} required={isEdit} />
+        <Textarea placeholder="내용" name="content" defaultValue={data?.content} required={isEdit} />
       </StInputs>
       <StButtons>
         <Button type="submit" variant="rounded">
@@ -84,6 +87,12 @@ const StInputRow = styled.div`
 
 const inputStyle = css`
   width: 100%;
+`;
+
+const StEmptyText = styled.div`
+  margin-top: 48px;
+  text-align: center;
+  line-height: 1.4;
 `;
 
 export default FeedbackForm;

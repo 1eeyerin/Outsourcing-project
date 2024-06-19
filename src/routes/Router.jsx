@@ -34,12 +34,12 @@ const router = createBrowserRouter([
         element: <FeedbackForm />
       },
       {
-        path: '/feedback/password-check',
-        element: <PasswordCheck />
-      },
-      {
         path: '/feedback/:id',
         element: <FeedbackDetail />
+      },
+      {
+        path: '/feedback/:id/password-check',
+        element: <PasswordCheck />
       }
     ]
   }

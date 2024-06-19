@@ -18,6 +18,10 @@ export const getFeedback = (id) => {
   );
 };
 
+export const getFeedbackPassword = (id) => {
+  return handleSupabaseRequest(supabase.from(FEEDBACK).select('password').match({ id }));
+};
+
 export const addFeedback = (content) => {
   return handleSupabaseRequest(supabase.from(FEEDBACK).insert(content));
 };
@@ -27,5 +31,5 @@ export const deleteFeedback = (id) => {
 };
 
 export const updateFeedback = ({ id, content }) => {
-  return handleSupabaseRequest(supabase.from(FEEDBACK).update({ content }).match({ id }));
+  return handleSupabaseRequest(supabase.from(FEEDBACK).update(content).match({ id }));
 };

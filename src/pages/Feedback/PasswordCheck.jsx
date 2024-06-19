@@ -1,10 +1,25 @@
-import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
+import { useGetFeedbackPassword } from '@/stores/queries/useFeedbackQueries';
 
 const PasswordCheck = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const navigate = useNavigate();
+  const { data: password } = useGetFeedbackPassword(1);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const { password: inputPassword } = Object.fromEntries(formData.entries());
+
+    if (password !== inputPassword) {
+      alert('비밀번호가 일치하지 않아요, 다시 확인해주세요');
+      return;
+    }
+
+    navigate('/feedback/1');
   };
 
   return (
@@ -15,7 +30,7 @@ const PasswordCheck = () => {
         비밀번호를 입력해주세요
       </StGuideText>
       <StInputWrapper>
-        <Input type="password" placeholder="비밀번호 입력" css={inputStyle} />
+        <Input type="password" placeholder="비밀번호 입력" />
         <Button type="submit" variant="rounded">
           비밀번호 확인
         </Button>
@@ -38,10 +53,10 @@ const StInputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 48px;
-`;
 
-const inputStyle = css`
-  width: 450px;
+  input {
+    width: 450px;
+  }
 `;
 
 export default PasswordCheck;

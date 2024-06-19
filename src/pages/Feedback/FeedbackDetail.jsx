@@ -1,31 +1,12 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
-import { deleteFeedback, getFeedback } from '@/supabase/feedback';
+import { useDeleteFeedback, useGetFeedback } from '@/stores/queries/useFeedbackQueries';
 
 const FeedbackDetail = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const { data, isPending } = useQuery({
-    queryKey: ['feedback', id],
-    queryFn: () => getFeedback(117),
-    select: (data) => data[0]
-  });
-
-  const { mutate: deleteFeedbackMutation } = useMutation({
-    mutationFn: () => deleteFeedback(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['feedback'] });
-      navigate(-1);
-    }
-  });
-
-  const handleDeleteFeedback = () => {
-    deleteFeedbackMutation(id);
-  };
+  const { data, isPending } = useGetFeedback(id);
+  const { mutate: deleteFeedbackMutation } = useDeleteFeedback(id);
 
   if (isPending) return null;
 
@@ -42,7 +23,7 @@ const FeedbackDetail = () => {
           <Button variant="rounded" href={`/feedback/${id}/edit`}>
             수정하기
           </Button>
-          <Button variant="rounded" onClick={handleDeleteFeedback}>
+          <Button variant="rounded" onClick={() => deleteFeedbackMutation(id)}>
             삭제하기
           </Button>
         </StRow>
