@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { FeedbackDetail, FeedbackForm, Home, Store, Menu, PasswordCheck } from '@/pages';
+import { Home, Menu, Store, Feedback } from '@/pages';
 import Layout from '@/components/Layout';
 
 const router = createBrowserRouter([
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: '/store',
         element: <Store />
+      },      
+      {
+        path: 'feedback',
+        element: <Feedback />
       },
       {
         path: '/feedback/write',
