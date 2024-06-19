@@ -19,7 +19,7 @@ const Header = () => {
             <Link to="/store">매장찾기</Link>
           </li>
           <li>
-            <Link to="/customer-voice">고객의소리</Link>
+            <Link to="/feedback">고객의소리</Link>
           </li>
         </StyledNav>
       </StContents>

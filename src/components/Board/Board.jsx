@@ -126,7 +126,7 @@ const Board = () => {
     else setPosts(data);
   };
   const handleAdd = () => {
-    navigate('1');
+    navigate('/feedback/write');
   };
 
   const getDate = (date) => {

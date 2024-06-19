@@ -47,6 +47,7 @@ const baseStyles = css`
   padding: 10px 24px;
   transition: 0.15s ease-in-out;
   color: #000000;
+  border: none;
   background-color: #ffffff;
 
   &:hover {
