@@ -1,7 +1,37 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '../../components/Button';
+import { Button } from '@/components/Button';
+import MenuList from '@/components/Menu/MenuList';
+import supabase from '@/supabase/supabaseClient';
 
 const Home = () => {
+  const [menus, setMenus] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const loadMenus = async () => {
+      try {
+        const { data, error } = await supabase.from('menus').select('title, content, thumbnail, category').limit(4);
+
+        if (error) throw new Error(error.message);
+
+        setMenus(data);
+      } catch (error) {
+        console.error('Error loading menus:', error);
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadMenus();
+  }, []);
+
+  if (isLoading) return <Loading>Loading...</Loading>;
+  if (isError) return <Error>Error loading menus</Error>;
+
   return (
     <StContainer>
       <StMainSection>
@@ -16,19 +46,22 @@ const Home = () => {
             <br />
             in a Classic Atmosphere
           </StIntroText2>
-          <Button variant="default" aria-label="Find Store">
+          <Button as={Link} to="/store" aria-label="Find Store">
             매장찾기
           </Button>
         </StIntroSection>
         <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
       </StMainSection>
-      <StMenuSection id="menu">
+      <StMenuSection>
         <StMenuHeader>
           <StMenuTitle>메뉴소개</StMenuTitle>
-          <StMenuViewMore>더보기</StMenuViewMore>
+          <StMenuViewMore to="/menu">더보기</StMenuViewMore>
         </StMenuHeader>
+        <StMenuListContainer>
+          <MenuList menus={menus} />
+        </StMenuListContainer>
       </StMenuSection>
-      <StSpaceSection id="space">
+      <StSpaceSection>
         <StSectionTitle>공간소개</StSectionTitle>
         <StSpaceImages>
           <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
@@ -87,22 +120,36 @@ const StIntroImage = styled.img`
 
 const StMenuSection = styled.section`
   margin-bottom: ${spacing.xxlarge};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
 const StMenuHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 `;
 
 const StMenuTitle = styled.h2`
   font-size: 24px;
 `;
 
-const StMenuViewMore = styled.p`
+const StMenuViewMore = styled(Link)`
   font-size: 14px;
   color: #777777;
   cursor: pointer;
+  text-decoration: none;
+`;
+
+const StMenuListContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: ${spacing.medium};
 `;
 
 const StSpaceSection = styled.section`
@@ -129,6 +176,23 @@ const StSpaceImage = styled.img`
   flex: 1;
   margin: 0 ${spacing.small} 0 0;
   max-height: 100%;
+`;
+
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+`;
+
+const Error = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: red;
 `;
 
 export default Home;
