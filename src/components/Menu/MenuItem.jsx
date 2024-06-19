@@ -2,22 +2,31 @@ import styled from 'styled-components';
 
 const MenuItem = ({ menu }) => (
   <StMenuItem>
-    <StImage src={menu.thumbnail} alt={menu.title} />
-    <StContent className="description">
-      <h3>{menu.title}</h3>
-      <content>{menu.content}</content>
-    </StContent>
+    <StImageWrapper>
+      <img src={menu.thumbnail} alt={menu.title} />
+    </StImageWrapper>
+    <StContentWrapper className="description">
+      <StMenuTitle>{menu.title}</StMenuTitle>
+      <StMenuContent>{menu.content}</StMenuContent>
+    </StContentWrapper>
   </StMenuItem>
 );
+const StImageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const StMenuItem = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
   background-color: #f3efe6;
   width: 340px;
   height: 520px;
-  margin-bottom: 20px;
-  transition: transform 0.5s, background-image 0.5s;
+  position: relative;
+  transition: transform 0.5s;
   cursor: pointer;
   .description {
     opacity: 0;
@@ -25,37 +34,39 @@ const StMenuItem = styled.div`
   }
   &:hover {
     transform: scale(1.03);
-
     .description {
       opacity: 1;
     }
   }
-`;
-
-const StImage = styled.img`
-  margin: auto 0;
-  margin-top: 80px;
-`;
-
-const StContent = styled.div`
-  padding: 0 0 33px 34.8px;
-  color: black;
-  background-image: linear-gradient(to bottom, rgba(243, 239, 230, 0), #f3efe6);
-  h3 {
-    margin: 0 6.8px 5px 0.3px;
-    font-family: Pretendard;
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1.4;
-    letter-spacing: normal;
-    text-align: left;
-    color: #000;
-  }
-
-  p {
-    margin-top: 5px;
-    font-size: 20px;
-    color: #555;
+  ::after {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
   }
 `;
+
+const StContentWrapper = styled.div`
+  width: 100%;
+  padding: 0 0 33px 20px;
+`;
+
+const StMenuTitle = styled.h4`
+  margin: 0 6.8px 5px 0.3px;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-align: left;
+  color: #000000;
+`;
+
+const StMenuContent = styled.p`
+  margin-top: 5px;
+  font-size: 20px;
+  color: #777777;
+`;
+
 export default MenuItem;

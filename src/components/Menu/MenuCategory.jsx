@@ -1,49 +1,36 @@
-import { useEffect, useState } from 'react';
+import { styled } from 'styled-components';
 
-const MenuCategory = ({ categories, onChange }) => {
-  const [selectedCategories, setSelectedCategories] = useState(['all']);
-
-  useEffect(() => {
-    setSelectedCategories(['all']);
-  }, []);
-
-  const handleCategoryChange = (e) => {
-    const value = e.target.value;
-    const checked = e.target.checked;
-
-    setSelectedCategories((prevCategories) =>
-      checked ? [...prevCategories, value] : prevCategories.filter((category) => category !== value)
-    );
-  };
-
-  useEffect(() => {
-    onChange(selectedCategories);
-  }, [selectedCategories, onChange]);
-
+const MenuCategory = ({ categories, selectedCategory, onCategoryChange }) => {
   return (
-    <div>
-      <label>
-        <input
-          type="checkbox"
-          value="all"
-          onChange={handleCategoryChange}
-          checked={selectedCategories.includes('all')}
-        />
-        전체
-      </label>
+    <StCategoryList>
       {categories.map((category) => (
-        <label key={category.value}>
-          <input
-            type="checkbox"
-            value={category.value}
-            onChange={handleCategoryChange}
-            checked={selectedCategories.includes(category.value)}
-          />
+        <StCategoryItem
+          key={category.value}
+          selected={selectedCategory === category.value}
+          onClick={() => onCategoryChange(category.value)}
+        >
           {category.label}
-        </label>
+        </StCategoryItem>
       ))}
-    </div>
+    </StCategoryList>
   );
 };
+
+const StCategoryList = styled.ul`
+  display: flex;
+  gap: 10px;
+`;
+
+const StCategoryItem = styled.li`
+  cursor: pointer;
+  font-weight: ${(props) => (props.selected ? 'bold' : '600')};
+  color: ${(props) => (props.selected ? '#ffffff' : '#777777')};
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+`;
 
 export default MenuCategory;

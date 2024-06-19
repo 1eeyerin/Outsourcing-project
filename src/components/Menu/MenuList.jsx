@@ -9,7 +9,7 @@ const StMenuList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin-top: 28px;
-  gap: 13px;
+  gap: 20px 13px;
 `;
 
 export default MenuList;

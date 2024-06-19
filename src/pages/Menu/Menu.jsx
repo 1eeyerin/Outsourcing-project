@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { MenuList } from '@/components/Menu';
+import { MenuCategory, MenuList } from '@/components/Menu';
 import { useFetchMenus } from '@/stores/queries/useMenuQueries';
 
 const Menu = () => {
@@ -11,14 +11,10 @@ const Menu = () => {
   const { data: menus } = useFetchMenus(selectedCategory);
 
   useEffect(() => {
-    if (category) {
-      setSelectedCategory(category);
-    } else {
-      setSelectedCategory('all');
-    }
+    setSelectedCategory(category || 'all');
   }, [category]);
 
-  const handleCategoryClick = (category) => {
+  const onCategoryChange = (category) => {
     navigate(`/menu/${category}`);
   };
 
@@ -33,23 +29,11 @@ const Menu = () => {
   return (
     <StMenuContainer>
       <StMenuTitle>메뉴소개</StMenuTitle>
-      <StCategoryList>
-        {categories.map((category) => (
-          <StCategoryItem
-            key={category.value}
-            selected={selectedCategory === category.value}
-            onClick={() => handleCategoryClick(category.value)}
-          >
-            {category.label}
-          </StCategoryItem>
-        ))}
-      </StCategoryList>
+      <MenuCategory categories={categories} selectedCategory={selectedCategory} onCategoryChange={onCategoryChange} />
       <MenuList menus={menus} />
     </StMenuContainer>
   );
 };
-
-export default Menu;
 
 const StMenuContainer = styled.div`
   margin-top: 80px;
@@ -57,23 +41,9 @@ const StMenuContainer = styled.div`
 `;
 const StMenuTitle = styled.h3`
   font-size: 24px;
+  font-weight: bold;
   margin-bottom: 84px;
   text-align: center;
 `;
-const StCategoryList = styled.ul`
-  display: flex;
-  gap: 10px;
-`;
 
-const StCategoryItem = styled.li`
-  cursor: pointer;
-  font-weight: ${(props) => (props.selected ? 'bold' : 600)};
-  color: ${(props) => (props.selected ? '#fff' : '#777777')};
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 20px;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.4;
- 
-`;
+export default Menu;
