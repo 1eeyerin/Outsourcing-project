@@ -4,6 +4,11 @@ import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
 import { showFeedback } from '@/supabase/feedback';
 
+const getDate = (date) => {
+  const newDate = new Date(date);
+  return `${newDate.getFullYear()}. ${newDate.getMonth() > 10 ? '' : '0'}${newDate.getMonth() + 1}. ${newDate.getDate() > 9 ? '' : '0'}${newDate.getDate()}`;
+};
+
 const Board = () => {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
@@ -11,11 +16,6 @@ const Board = () => {
   const showFeedbackData = async () => {
     const getData = await showFeedback();
     setPosts(getData);
-  };
-
-  const getDate = (date) => {
-    const newDate = new Date(date);
-    return `${newDate.getFullYear()}. ${newDate.getMonth() > 10 ? '' : '0'}${newDate.getMonth() + 1}. ${newDate.getDate() > 9 ? '' : '0'}${newDate.getDate()}`;
   };
 
   const handleAdd = () => {
@@ -94,10 +94,8 @@ const StContentBox = styled.div`
 const StSpanDiv = styled.div`
   width: 140px;
   height: 51px;
-  flex-grow: 0;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
   gap: 16px;
   padding: 32px 0 0;
@@ -113,7 +111,6 @@ const StSpanDiv = styled.div`
   }
   & > span:nth-child(2) {
     flex-shrink: 0;
-    flex-grow: 0;
     font-family: Pretendard;
     font-size: 14px;
     font-weight: 500;
