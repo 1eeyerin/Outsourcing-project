@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
 const InfiniteScroll = ({ fetchNextPage, hasNextPage, children }) => {
-  const { ref, inView } = useInView({ threshold: 1 });
+  const { ref, inView } = useInView({ threshold: 0 });
 
   useEffect(() => {
     if (!(inView && hasNextPage)) return;
