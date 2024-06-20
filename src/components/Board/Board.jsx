@@ -34,12 +34,8 @@ const Board = () => {
   );
 };
 const StContainerBox = styled.div`
-  width: 1400px;
-  height: 816px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
   gap: 24px;
   padding: 48px 0 32px;
 `;
@@ -52,10 +48,10 @@ const StButton = styled.button`
   border-radius: 60px;
   position: fixed;
   bottom: 40px;
-  right: 174px;
+  right: 50px;
   font-size: 24px;
   font-weight: bold;
-  color: #fff;
+  color: #ffffff;
 `;
 
 const StContentBox = styled(Link)`
@@ -63,7 +59,6 @@ const StContentBox = styled(Link)`
   gap: 10px;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
   padding: 32px;
   border-radius: 12px;
   background-color: #11151b;
@@ -74,6 +69,7 @@ const StContentBox = styled(Link)`
     color: #fff;
     ${ellipsisStyle(1)}
   }
+
   & > span:nth-child(2) {
     font-size: 16px;
     font-weight: 500;
@@ -82,10 +78,7 @@ const StContentBox = styled(Link)`
   }
 `;
 const StSpanDiv = styled.div`
-  width: 140px;
-  height: 51px;
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 16px;
   padding: 32px 0 0;
@@ -94,18 +87,17 @@ const StSpanDiv = styled.div`
     max-width: 1230px;
     font-size: 16px;
     font-weight: 600;
-    color: #fff;
+    color: #ffffff;
     flex-shrink: 0;
-
-    ${ellipsisStyle(1)}
+    ${ellipsisStyle(1)};
   }
+
   & > span:nth-child(2) {
     flex-shrink: 0;
-    font-family: Pretendard;
     font-size: 14px;
     font-weight: 500;
     color: #727272;
-    ${ellipsisStyle(1)}
+    ${ellipsisStyle(1)};
   }
 `;
 
