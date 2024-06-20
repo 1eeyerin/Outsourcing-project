@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
 import iconSearch from '@/assets/icons/icon_search.svg';
+import Typography from '../Typography/Typography';
 
 const StoreContainer = () => {
   const [map, setMap] = useState(null);
@@ -147,7 +148,9 @@ const StoreContainer = () => {
 
   return (
     <StContainer>
-      <StHeading>매장찾기</StHeading>
+      <Typography size="l" weight="b">
+        매장찾기
+      </Typography>
       <StMapWrap>
         <StMap id="map" />
         <StSearchBox>
@@ -193,15 +196,7 @@ const StoreContainer = () => {
 };
 
 const StContainer = styled.div`
-  height: 500px;
   padding: 56px 0;
-`;
-
-const StHeading = styled.h2`
-  font-size: 24px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 58px;
 `;
 
 const StMapWrap = styled.div`

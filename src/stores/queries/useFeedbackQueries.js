@@ -5,7 +5,7 @@ import { addFeedback, deleteFeedback, getFeedback, getFeedbackPassword, updateFe
 export const useGetFeedback = (id) => {
   return useQuery({
     queryKey: ['feedback', id],
-    queryFn: () => getFeedback(117),
+    queryFn: () => getFeedback(id),
     select: (data) => data[0]
   });
 };
@@ -23,15 +23,18 @@ export const useGetFeedbackPassword = (id) => {
   });
 };
 
-export const useAddFeedback = () => {
+export const useAddFeedback = (options) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (content) => addFeedback(content),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedback'] });
       alert('작성이 완료되었어요');
-    }
+      navigate('/feedback');
+    },
+    ...options
   });
 };
 
@@ -40,11 +43,11 @@ export const useUpdateFeedback = (id) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (content) => updateFeedback({ id: 117, content }),
+    mutationFn: (content) => updateFeedback({ id, content }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feedback', id] });
       alert('수정되었어요');
-      navigate('/feedback/117');
+      navigate(`/feedback/${id}`);
     },
     enabled: !!id
   });
