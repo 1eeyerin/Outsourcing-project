@@ -1,9 +1,17 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Typography } from '@/components/Typography';
 
-const Header = () => {
+const Header = ({ css }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <StHeader>
+    <StHeader $css={css}>
       <StContents>
         <StLink to="/">
           <StHeading>
@@ -11,18 +19,75 @@ const Header = () => {
             <StSpan>classic</StSpan>
           </StHeading>
         </StLink>
-        <StyledNav>
-          <li>
-            <Link to="/menu">메뉴</Link>
-          </li>
-          <li>
-            <Link to="/store">매장찾기</Link>
-          </li>
-          <li>
-            <Link to="/feedback">고객의소리</Link>
-          </li>
-        </StyledNav>
+        <NavContainer>
+          <StyledNav>
+            <li>
+              <Link to="/menu">
+                <Typography size="s" as="span">
+                  메뉴
+                </Typography>
+              </Link>
+            </li>
+            <li>
+              <Link to="/store">
+                <Typography size="s" as="span">
+                  매장찾기
+                </Typography>
+              </Link>
+            </li>
+            <li>
+              <Link to="/feedback">
+                <Typography size="s" as="span">
+                  고객의 소리
+                </Typography>
+              </Link>
+            </li>
+          </StyledNav>
+          <HamburgerButton onClick={toggleMenu}>
+            <span />
+            <span />
+            <span />
+          </HamburgerButton>
+        </NavContainer>
       </StContents>
+      {isMenuOpen && (
+        <OverlayMenu>
+          <StHeaderContainer>
+            <StLink to="/" onClick={toggleMenu}>
+              <StHeading>
+                <StStrong>1943</StStrong>
+                <StSpan>classic</StSpan>
+              </StHeading>
+            </StLink>
+            <CloseButton onClick={toggleMenu}>&times;</CloseButton>
+          </StHeaderContainer>
+          <OverlayContent>
+            <ul>
+              <li>
+                <Link to="/menu" onClick={toggleMenu}>
+                  <Typography size="s" as="span">
+                    메뉴
+                  </Typography>
+                </Link>
+              </li>
+              <li>
+                <Link to="/store" onClick={toggleMenu}>
+                  <Typography size="s" as="span">
+                    매장찾기
+                  </Typography>
+                </Link>
+              </li>
+              <li>
+                <Link to="/feedback" onClick={toggleMenu}>
+                  <Typography size="s" as="span">
+                    고객의 소리
+                  </Typography>
+                </Link>
+              </li>
+            </ul>
+          </OverlayContent>
+        </OverlayMenu>
+      )}
     </StHeader>
   );
 };
@@ -32,11 +97,22 @@ const StHeader = styled.header`
   background-color: #000000;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 1000;
   padding: 24px 0;
-
+  ${({ $css }) => $css};
   @media (max-width: 1400px) {
     padding: 0 20px;
+  }
+`;
+const StyledNav = styled.ul`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 16px;
+  font-weight: 300;
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -76,12 +152,81 @@ const StSpan = styled.span`
   font-size: 15px;
 `;
 
-const StyledNav = styled.ul`
+const NavContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 24px;
-  font-size: 16px;
-  font-weight: 300;
+`;
+
+const HamburgerButton = styled.button`
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+
+  span {
+    width: 24px;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 1px;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const OverlayMenu = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  z-index: 1000;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+`;
+
+const OverlayContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  ul {
+    list-style: none;
+    margin: 26px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  li {
+    margin-left: 20px;
+    padding: 10px 0;
+  }
+`;
+
+const StHeaderContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 20px 20px;
 `;
 
 export default Header;

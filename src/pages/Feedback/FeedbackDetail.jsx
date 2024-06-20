@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '@/components/Button';
+import Button from '@/components/Button';
 import { Typography } from '@/components/Typography';
 import { ellipsisStyle } from '@/styles/utils';
 import { useDeleteFeedback, useGetFeedback } from '@/stores/queries/useFeedbackQueries';

@@ -1,16 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Home, Menu, Store, Feedback, FeedbackForm, FeedbackDetail, PasswordCheck } from '@/pages';
+import { Menu, Store, Feedback, FeedbackForm, FeedbackDetail, PasswordCheck, Home } from '@/pages';
 import Layout from '@/components/Layout';
 
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <Home />
+  },
+  {
+    path: '/',
     element: <Layout />,
     children: [
-      {
-        index: true,
-        element: <Home />
-      },
       {
         path: 'menu',
         element: <Menu />,

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
+import { Typography } from '@/components/Typography';
+import SectionTitle from '@/components/Typography/SectionTitle';
 import iconSearch from '@/assets/icons/icon_search.svg';
-import Typography from '../Typography/Typography';
 
 const StoreContainer = () => {
   const [map, setMap] = useState(null);
-  const [infowindow, setInfowindow] = useState(null);
   const [ps, setPs] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [placesList, setPlacesList] = useState([]);
@@ -55,7 +55,7 @@ const StoreContainer = () => {
       bounds.extend(placePosition);
 
       window.kakao.maps.event.addListener(marker, 'click', () => {
-        displayInfowindow(marker, place.place_name);
+        map.panTo(marker.getPosition());
       });
     });
 
@@ -84,22 +84,11 @@ const StoreContainer = () => {
     return marker;
   };
 
-  const displayInfowindow = (marker, title) => {
-    infowindow.setContent(`<div style="padding:5px;color:#333333;">${title}</div>`);
-    infowindow.open(map, marker);
-  };
-
   const removeMarkers = () => {
     markers.forEach((marker) => {
       marker.setMap(null);
     });
     setMarkers([]);
-  };
-
-  const handleClickPlace = (index) => {
-    const marker = markers[index];
-    map.panTo(marker.getPosition());
-    displayInfowindow(marker, marker.getTitle());
   };
 
   const handleInputChange = (e) => {
@@ -118,15 +107,25 @@ const StoreContainer = () => {
     }
   };
 
+  const handleClickPlace = (index) => {
+    const marker = markers[index];
+    const position = marker.getPosition();
+
+    map.panTo(position);
+
+    const bounds = new window.kakao.maps.LatLngBounds();
+    bounds.extend(position);
+    map.setBounds(bounds);
+  };
+
   useEffect(() => {
     const loadMap = () => {
       window.kakao.maps.load(() => {
         const mapInstance = new window.kakao.maps.Map(document.getElementById('map'), {
           center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-          level: 3
+          level: 5
         });
         setMap(mapInstance);
-        setInfowindow(new window.kakao.maps.InfoWindow({ zIndex: 1 }));
         setPs(new window.kakao.maps.services.Places());
       });
     };
@@ -136,21 +135,21 @@ const StoreContainer = () => {
 
   useEffect(() => {
     if (ps && searchTerm) {
-      const debouncedSearch = debounce(searchPlaces, 1000); // debounce 함수로 searchPlaces 함수를 2초 지연시킵니다.
-      debouncedSearch(searchTerm); // 검색어가 변경될 때마다 debouncedSearch 함수를 호출합니다.
+      const debouncedSearch = debounce(searchPlaces, 1000);
+      debouncedSearch(searchTerm);
 
       return () => {
-        debouncedSearch.cancel(); // cleanup 함수에서 debounce된 함수를 취소합니다.
+        debouncedSearch.cancel();
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ps, searchTerm]);
 
   return (
-    <StContainer>
-      <Typography size="l" weight="b">
+    <div>
+      <SectionTitle size="l" weight="700">
         매장찾기
-      </Typography>
+      </SectionTitle>
       <StMapWrap>
         <StMap id="map" />
         <StSearchBox>
@@ -172,8 +171,12 @@ const StoreContainer = () => {
               <ul>
                 {placesList.map((place, index) => (
                   <StItem key={index} onClick={() => handleClickPlace(index)}>
-                    <StItemTitle>{place.place_name}</StItemTitle>
-                    <StItemAdress>{place.address_name}</StItemAdress>
+                    <Typography as="strong" size="s" color="#232323" weight="700">
+                      {place.place_name}
+                    </Typography>
+                    <Typography as="p" size="xs" color="#b0b0b0">
+                      {place.address_name}
+                    </Typography>
                   </StItem>
                 ))}
               </ul>
@@ -191,13 +194,9 @@ const StoreContainer = () => {
           </StListBox>
         </StSearchBox>
       </StMapWrap>
-    </StContainer>
+    </div>
   );
 };
-
-const StContainer = styled.div`
-  padding: 56px 0;
-`;
 
 const StMapWrap = styled.div`
   position: relative;
@@ -224,7 +223,7 @@ const StSearchBox = styled.div`
   background-color: #ffffff;
   box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
   overflow: hidden;
-  z-index: 10;
+  z-index: 9;
 `;
 
 const StParagraph = styled.p`
@@ -285,24 +284,15 @@ const StListBox = styled.div`
 `;
 
 const StItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding: 24px;
   cursor: pointer;
 
   &:hover {
     background-color: #f7f7f7;
   }
-`;
-
-const StItemTitle = styled.h5`
-  margin-bottom: 10px;
-  color: #232323;
-  font-size: 16px;
-  font-weight: 700;
-`;
-
-const StItemAdress = styled.p`
-  color: #b0b0b0;
-  font-size: 13px;
 `;
 
 const StPagination = styled.div`

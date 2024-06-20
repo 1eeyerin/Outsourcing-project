@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
-import { showFeedback } from '@/supabase/feedback';
+import { useGetFeedbacks } from '@/stores/queries/useFeedbackQueries';
 
 const getDate = (date) => {
   const newDate = new Date(date);
@@ -10,21 +9,13 @@ const getDate = (date) => {
 };
 
 const Board = () => {
-  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
 
-  const showFeedbackData = async () => {
-    const getData = await showFeedback();
-    setPosts(getData);
-  };
+  const { data: posts = [] } = useGetFeedbacks();
 
   const handleAdd = () => {
     navigate('/feedback/write');
   };
-
-  useEffect(() => {
-    showFeedbackData();
-  }, []);
 
   return (
     <StContainerBox>
@@ -44,11 +35,8 @@ const Board = () => {
 };
 const StContainerBox = styled.div`
   max-width: 1400px;
-  height: 816px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
   gap: 24px;
   padding: 48px 0 32px;
   @media (max-width: 1400px) {
@@ -67,7 +55,7 @@ const StButton = styled.button`
   right: 100px;
   font-size: 24px;
   font-weight: bold;
-  color: #fff;
+  color: #ffffff;
 `;
 
 const StContentBox = styled(Link)`
@@ -75,7 +63,6 @@ const StContentBox = styled(Link)`
   gap: 10px;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
   padding: 32px;
   border-radius: 12px;
   background-color: #11151b;
@@ -86,6 +73,7 @@ const StContentBox = styled(Link)`
     color: #fff;
     ${ellipsisStyle(1)}
   }
+
   & > span:nth-child(2) {
     font-size: 16px;
     font-weight: 500;
@@ -94,10 +82,7 @@ const StContentBox = styled(Link)`
   }
 `;
 const StSpanDiv = styled.div`
-  width: 140px;
-  height: 51px;
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 16px;
   padding: 32px 0 0;
@@ -106,20 +91,18 @@ const StSpanDiv = styled.div`
     max-width: 100px;
     font-size: 16px;
     font-weight: 600;
-    color: #fff;
+    color: #ffffff;
     flex-shrink: 0;
 
     ${ellipsisStyle(1)}
-    @media (max-width: 1400px) {
-    }
   }
+
   & > span:nth-child(2) {
     flex-shrink: 0;
-    font-family: Pretendard;
     font-size: 14px;
     font-weight: 500;
     color: #727272;
-    ${ellipsisStyle(1)}
+    ${ellipsisStyle(1)};
   }
 `;
 

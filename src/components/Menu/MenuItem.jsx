@@ -73,6 +73,11 @@ const StMenuItem = styled.div`
     z-index: 1;
     transition: 0.4s;
   }
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 `;
 
 const StContentWrapper = styled.div`
