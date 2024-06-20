@@ -3,8 +3,14 @@ import supabase from './supabaseClient';
 
 const FEEDBACK = 'feedback';
 
-export const getFeedbacks = () => {
-  return handleSupabaseRequest(supabase.from(FEEDBACK).select('*').order('created_at', { ascending: false }));
+export const getFeedbacks = ({ pageParam = 0, limit = 4 }) => {
+  return handleSupabaseRequest(
+    supabase
+      .from(FEEDBACK)
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(pageParam, pageParam + (limit - 1))
+  );
 };
 
 export const getFeedback = (id) => {
