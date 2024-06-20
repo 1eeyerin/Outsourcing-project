@@ -148,7 +148,7 @@ const StoreContainer = () => {
   }, [ps, searchTerm]);
 
   return (
-    <StContainer>
+    <div>
       <SectionTitle size="l" weight="700">
         매장찾기
       </SectionTitle>
@@ -196,11 +196,9 @@ const StoreContainer = () => {
           </StListBox>
         </StSearchBox>
       </StMapWrap>
-    </StContainer>
+    </div>
   );
 };
-
-const StContainer = styled.div``;
 
 const StMapWrap = styled.div`
   position: relative;

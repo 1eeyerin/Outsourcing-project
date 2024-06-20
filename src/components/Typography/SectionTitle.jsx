@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Typography } from '@/components/Typography';
+
 const SectionTitle = ({ size, weight, color, children }) => {
   return (
     <Title size={size} weight={weight} color={color}>
