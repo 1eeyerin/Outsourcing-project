@@ -144,14 +144,14 @@ const StoreContainer = () => {
   }, [ps, searchTerm]);
 
   return (
-    <Container>
-      <Heading>매장찾기</Heading>
-      <MapWrap>
-        <Map id="map" />
-        <SearchBox>
-          <Paragraph>찾으실 매장을 검색해주세요</Paragraph>
-          <Form onSubmit={(e) => e.preventDefault()}>
-            <Input
+    <StContainer>
+      <StHeading>매장찾기</StHeading>
+      <StMapWrap>
+        <StMap id="map" />
+        <StSearchBox>
+          <StParagraph>찾으실 매장을 검색해주세요</StParagraph>
+          <StForm onSubmit={(e) => e.preventDefault()}>
+            <StInput
               type="text"
               id="keyword"
               value={searchTerm}
@@ -159,63 +159,63 @@ const StoreContainer = () => {
               onKeyPress={handleKeyPress}
               placeholder="Search..."
             />
-          </Form>
+          </StForm>
 
-          <ListBox>
+          <StListBox>
             <>
-              {searchedOnce && placesList.length === 0 && <Paragraph>검색 결과가 없습니다.</Paragraph>}
+              {searchedOnce && placesList.length === 0 && <StParagraph>검색 결과가 없습니다.</StParagraph>}
               <ul>
                 {placesList.map((place, index) => (
-                  <Item key={index} onClick={() => handleClickPlace(index)}>
-                    <ItemTitle>{place.place_name}</ItemTitle>
-                    <ItemAdress>{place.address_name}</ItemAdress>
-                  </Item>
+                  <StItem key={index} onClick={() => handleClickPlace(index)}>
+                    <StItemTitle>{place.place_name}</StItemTitle>
+                    <StItemAdress>{place.address_name}</StItemAdress>
+                  </StItem>
                 ))}
               </ul>
             </>
 
             {pagination && (
-              <Pagination>
+              <StPagination>
                 {[...Array(pagination.last)].map((_, index) => (
-                  <Button key={index + 1} onClick={() => pagination.gotoPage(index + 1)} type="button">
+                  <StButton key={index + 1} onClick={() => pagination.gotoPage(index + 1)} type="button">
                     {index + 1}
-                  </Button>
+                  </StButton>
                 ))}
-              </Pagination>
+              </StPagination>
             )}
-          </ListBox>
-        </SearchBox>
-      </MapWrap>
-    </Container>
+          </StListBox>
+        </StSearchBox>
+      </StMapWrap>
+    </StContainer>
   );
 };
 
-const Container = styled.div`
+const StContainer = styled.div`
   height: 500px;
   padding: 56px 0;
 `;
 
-const Heading = styled.h2`
+const StHeading = styled.h2`
   font-size: 24px;
   font-weight: 700;
   text-align: center;
   margin-bottom: 58px;
 `;
 
-const MapWrap = styled.div`
+const StMapWrap = styled.div`
   position: relative;
   width: 100%;
   height: 607px;
 `;
 
-const Map = styled.div`
+const StMap = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 15px;
 `;
 
-const SearchBox = styled.div`
+const StSearchBox = styled.div`
   position: absolute;
   top: 56px;
   left: 44px;
@@ -230,7 +230,7 @@ const SearchBox = styled.div`
   z-index: 10;
 `;
 
-const Paragraph = styled.p`
+const StParagraph = styled.p`
   line-height: 18px;
   color: #333333;
   font-size: 15px;
@@ -239,13 +239,13 @@ const Paragraph = styled.p`
   margin-bottom: 20px;
 `;
 
-const Form = styled.form`
+const StForm = styled.form`
   position: relative;
   height: 43px;
   padding: 0 20px;
 `;
 
-const Input = styled.input`
+const StInput = styled.input`
   width: 100%;
   height: 100%;
   border: 1px solid #eceef6;
@@ -264,7 +264,7 @@ const Input = styled.input`
   }
 `;
 
-const ListBox = styled.div`
+const StListBox = styled.div`
   position: absolute;
   top: 135px;
   bottom: 0;
@@ -287,7 +287,7 @@ const ListBox = styled.div`
   }
 `;
 
-const Item = styled.li`
+const StItem = styled.li`
   padding: 24px;
   cursor: pointer;
 
@@ -296,23 +296,23 @@ const Item = styled.li`
   }
 `;
 
-const ItemTitle = styled.h5`
+const StItemTitle = styled.h5`
   margin-bottom: 10px;
   color: #232323;
   font-size: 16px;
   font-weight: 700;
 `;
 
-const ItemAdress = styled.p`
+const StItemAdress = styled.p`
   color: #b0b0b0;
   font-size: 13px;
 `;
 
-const Pagination = styled.div`
+const StPagination = styled.div`
   text-align: center;
 `;
 
-const Button = styled.button`
+const StButton = styled.button`
   border: none;
   background-color: inherit;
   cursor: pointer;
