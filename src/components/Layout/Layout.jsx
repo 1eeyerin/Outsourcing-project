@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
-import ScrollToTop from '../../hooks/useScrollToTop';
+import useScrollToTop from '@/hooks/useScrollToTop';
 import Header from './Header';
 
 const Layout = () => {
+  useScrollToTop();
   return (
     <>
-      <ScrollToTop />
       <Header />
       <StLayout>
         <Outlet />
