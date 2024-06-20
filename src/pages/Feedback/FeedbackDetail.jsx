@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@/components/Button';
-import { Typography } from '@/components/Typography';
+import SectionTitle from '@/components/Typography/SectionTitle';
 import { ellipsisStyle } from '@/styles/utils';
 import { useDeleteFeedback, useGetFeedback } from '@/stores/queries/useFeedbackQueries';
 
@@ -16,9 +16,9 @@ const FeedbackDetail = () => {
   return (
     <>
       <StTypographyWrapper>
-        <Typography size="l" weight="b">
-          고객의소리
-        </Typography>
+        <SectionTitle size="l" weight="700">
+          고객의 소리
+        </SectionTitle>
       </StTypographyWrapper>
       <StArticle>
         <StText>{data.title}</StText>

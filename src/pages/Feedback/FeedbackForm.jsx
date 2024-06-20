@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import styled, { css } from 'styled-components';
 import Button from '@/components/Button';
 import { Textarea, Input } from '@/components/Form';
-import { Typography } from '@/components/Typography';
+import SectionTitle from '@/components/Typography/SectionTitle';
 import { useAddFeedback, useGetFeedbackFromQueries, useUpdateFeedback } from '@/stores/queries/useFeedbackQueries';
 import FeedbackError from './FeedbackError';
 
@@ -42,9 +42,9 @@ const FeedbackForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <StTypographyWrapper>
-        <Typography size="l" weight="b">
-          고객의소리
-        </Typography>
+        <SectionTitle size="l" weight="700">
+          고객의 소리
+        </SectionTitle>
       </StTypographyWrapper>
       <StInputs>
         <StInputRow>
