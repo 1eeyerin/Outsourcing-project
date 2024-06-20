@@ -79,4 +79,4 @@ const StLink = styled(Link)`
 
 Button.displayName = 'Button';
 
-export { Button };
+export default Button;

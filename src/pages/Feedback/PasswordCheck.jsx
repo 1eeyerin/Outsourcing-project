@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '@/components/Button';
-import Input from '@/components/Input';
+import Button from '@/components/Button';
+import { Input } from '@/components/Form';
 import { Typography } from '@/components/Typography';
 import { useGetFeedbackPassword } from '@/stores/queries/useFeedbackQueries';
 
