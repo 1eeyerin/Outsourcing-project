@@ -10,10 +10,6 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState(category || 'all');
   const { data: menus } = useFetchMenus(selectedCategory);
 
-  useEffect(() => {
-    setSelectedCategory(category || 'all');
-  }, [category]);
-
   const onCategoryChange = (category) => {
     navigate(`/menu/${category}`);
   };
@@ -25,6 +21,9 @@ const Menu = () => {
     { value: 'friedFoods', label: '튀김' },
     { value: 'fruitsDesserts', label: '과일&디저트' }
   ];
+  useEffect(() => {
+    setSelectedCategory(category || 'all');
+  }, [category]);
 
   return (
     <StMenuContainer>

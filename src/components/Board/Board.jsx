@@ -13,7 +13,6 @@ const StcontainerBox = styled.div`
   align-items: stretch;
   gap: 24px;
   padding: 48px 0 32px;
-}
 `;
 const Stbutton = styled.button`
   width: 60px;
