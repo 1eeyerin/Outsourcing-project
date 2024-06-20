@@ -5,6 +5,7 @@ import Header from './Header';
 
 const Layout = () => {
   useScrollToTop();
+
   return (
     <>
       <Header />
