@@ -1,72 +1,83 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import Button from '@/components/Button';
+import { useQuery } from '@tanstack/react-query';
+import styled, { css } from 'styled-components';
+import { Mousewheel, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Button from '@/components/Button/Button';
+import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
-import supabase from '@/supabase/supabaseClient';
+import { fetchLimitedMenus } from '@/supabase/menu';
+import 'swiper/css/pagination';
+import 'swiper/css';
 
 const Home = () => {
-  const [menus, setMenus] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: menus, isPending } = useQuery({
+    queryKey: ['fetchLimitedMenus'],
+    queryFn: () => fetchLimitedMenus(4)
+  });
 
-  useEffect(() => {
-    const loadMenus = async () => {
-      try {
-        const { data, error } = await supabase.from('menus').select('title, content, thumbnail, category').limit(4);
-
-        if (error) throw new Error(error.message);
-
-        setMenus(data);
-      } catch (error) {
-        console.error('Error loading menus:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadMenus();
-  }, []);
-
-  if (isLoading) return null;
+  if (isPending) return null;
 
   return (
-    <StContainer>
-      <StMainSection>
-        <StIntroSection>
-          <StIntroText1>
-            1943: 전통과 현대가
-            <br />
-            어우러진 공간
-          </StIntroText1>
-          <StIntroText2>
-            1943 Drink, Laugh, and Immerse Yourself
-            <br />
-            in a Classic Atmosphere
-          </StIntroText2>
-          <Button href="/store" aria-label="Find Store">
-            매장찾기
-          </Button>
-        </StIntroSection>
-        <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
-      </StMainSection>
-      <StMenuSection>
-        <StMenuHeader>
-          <StMenuTitle>메뉴소개</StMenuTitle>
-          <StMenuViewMore to="/menu">더보기</StMenuViewMore>
-        </StMenuHeader>
-        <StMenuListContainer>
-          <MenuList menus={menus} />
-        </StMenuListContainer>
-      </StMenuSection>
-      <StSpaceSection>
-        <StSectionTitle>공간소개</StSectionTitle>
-        <StSpaceImages>
-          <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
-          <StSpaceImage src="/images/main-space-2.png" alt="Space 2" />
-          <StSpaceImage src="/images/main-space-3.png" alt="Space 3" />
-        </StSpaceImages>
-      </StSpaceSection>
-    </StContainer>
+    <>
+      <Header css={headerStyle} />
+      <StyledSwiper
+        direction={'vertical'}
+        spaceBetween={30}
+        slidesPerView={1}
+        mousewheel={true}
+        pagination={{ clickable: true }}
+        modules={[Mousewheel, Pagination]}
+      >
+        <SwiperSlide>
+          <SlideWrapper>
+            <StMainSection>
+              <StIntroSection>
+                <StIntroText1>
+                  1943: 전통과 현대가
+                  <br />
+                  어우러진 공간
+                </StIntroText1>
+                <StIntroText2>
+                  1943 Drink, Laugh, and Immerse Yourself
+                  <br />
+                  in a Classic Atmosphere
+                </StIntroText2>
+                <Button href="/store" aria-label="Find Store">
+                  매장찾기
+                </Button>
+              </StIntroSection>
+              <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
+            </StMainSection>
+          </SlideWrapper>
+        </SwiperSlide>
+        <SwiperSlide>
+          <SlideWrapper>
+            <StMenuSection>
+              <StMenuHeader>
+                <StMenuTitle>메뉴소개</StMenuTitle>
+                <StMenuViewMore to="/menu">더보기</StMenuViewMore>
+              </StMenuHeader>
+              <StMenuListContainer>
+                <MenuList menus={menus} />
+              </StMenuListContainer>
+            </StMenuSection>
+          </SlideWrapper>
+        </SwiperSlide>
+        <SwiperSlide>
+          <SlideWrapper>
+            <StSpaceSection>
+              <StSectionTitle>공간소개</StSectionTitle>
+              <StSpaceImages>
+                <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
+                <StSpaceImage src="/images/main-space-2.png" alt="Space 2" />
+                <StSpaceImage src="/images/main-space-3.png" alt="Space 3" />
+              </StSpaceImages>
+            </StSpaceSection>
+          </SlideWrapper>
+        </SwiperSlide>
+      </StyledSwiper>
+    </>
   );
 };
 
@@ -78,23 +89,40 @@ const spacing = {
   xxlarge: '230px'
 };
 
-const StContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 ${spacing.xlarge};
+const headerStyle = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+`;
+
+const StyledSwiper = styled(Swiper)`
+  width: 100%;
+  height: 100vh;
+
+  .swiper-pagination {
+    display: none;
+  }
+`;
+
+const SlideWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 `;
 
 const StMainSection = styled.section`
-  width: 100%;
-  height: 634px;
+  width: 1400px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: ${spacing.xlarge} auto;
 `;
 
 const StIntroSection = styled.div`
-  margin: 0 ${spacing.large};
+  width: 100%;
+  margin-left: ${spacing.large};
 `;
 
 const StIntroText1 = styled.h1`
@@ -116,11 +144,10 @@ const StIntroImage = styled.img`
 `;
 
 const StMenuSection = styled.section`
-  margin-bottom: ${spacing.xxlarge};
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 1400px;
 `;
 
 const StMenuHeader = styled.div`
@@ -154,7 +181,7 @@ const StSpaceSection = styled.section`
   flex-direction: column;
   align-items: center;
   gap: ${spacing.medium};
-  padding-bottom: 277px;
+  width: 1400px;
 `;
 
 const StSectionTitle = styled.h2`
