@@ -25,10 +25,8 @@ const StCategoryItem = styled.li`
   cursor: pointer;
   font-weight: ${(props) => (props.selected ? 'bold' : '600')};
   color: ${(props) => (props.selected ? '#ffffff' : '#777777')};
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 0 5px;
   font-size: 20px;
-  font-stretch: normal;
   font-style: normal;
   line-height: 1.4;
 `;

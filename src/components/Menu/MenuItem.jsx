@@ -1,20 +1,25 @@
 import styled from 'styled-components';
+import { ellipsisStyle } from '@/styles/utils';
 
 const MenuItem = ({ menu }) => (
   <StMenuItem>
-    <StImageWrapper>
+    <StImageWrapper className="imageBox">
       <img src={menu.thumbnail} alt={menu.title} />
     </StImageWrapper>
     <StContentWrapper className="description">
-      <StMenuTitle>{menu.title}</StMenuTitle>
-      <StMenuContent>{menu.content}</StMenuContent>
+      <StMenuTitle className="menu-title">{menu.title}</StMenuTitle>
+      <StMenuContent className="menu-content">{menu.content}</StMenuContent>
     </StContentWrapper>
   </StMenuItem>
 );
+
 const StImageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100%;
+  transition: transform 0.5s;
 `;
 
 const StMenuItem = styled.div`
@@ -26,19 +31,39 @@ const StMenuItem = styled.div`
   width: 340px;
   height: 520px;
   position: relative;
-  transition: transform 0.5s;
   cursor: pointer;
+  overflow: hidden;
+
+  .menu-title {
+    opacity: 0;
+  }
+  .menu-content {
+    opacity: 0;
+  }
+  &:hover .menu-title {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  &:hover .menu-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
   .description {
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.7s;
   }
   &:hover {
-    transform: scale(1.03);
     .description {
       opacity: 1;
     }
+    .imageBox {
+      transform: scale(1.03);
+    }
+    &::after {
+      opacity: 1;
+    }
   }
-  ::after {
+  &::after {
     position: absolute;
     content: '';
     left: 0;
@@ -46,27 +71,48 @@ const StMenuItem = styled.div`
     right: 0;
     bottom: 0;
     opacity: 0;
+    background: rgba(0, 0, 0, 20%);
+    z-index: 1;
+    transition: 0.4s;
   }
 `;
 
 const StContentWrapper = styled.div`
+  padding: 0 16px 33px;
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 100%;
-  padding: 0 0 33px 20px;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(243, 239, 230, 0), #f3efe6);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  z-index: 2;
 `;
 
-const StMenuTitle = styled.h4`
+const StMenuTitle = styled.strong`
   margin: 0 6.8px 5px 0.3px;
   font-size: 28px;
   font-weight: 800;
   line-height: 1.4;
-  text-align: left;
   color: #000000;
+  transform: translate(0, 100px);
+  transition:
+    opacity 0.2s,
+    transform 0.4s;
 `;
 
 const StMenuContent = styled.p`
   margin-top: 5px;
   font-size: 20px;
   color: #777777;
+  ${ellipsisStyle(1)};
+  transform: translate(0, 100px);
+  transition:
+    opacity 0.1s,
+    transform 0.8s;
 `;
 
 export default MenuItem;
