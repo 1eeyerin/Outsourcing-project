@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
+import useScrollToTop from '@/hooks/useScrollToTop';
 import Button from '@/components/Button/Button';
 import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
 import supabase from '@/supabase/supabaseClient';
+import 'swiper/css/pagination';
+import 'swiper/css';
 
 const Home = () => {
   const [menus, setMenus] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  useScrollToTop();
 
   useEffect(() => {
     const loadMenus = async () => {
@@ -125,7 +128,6 @@ const SlideWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding-top: 100px;
 `;
 
 const StMainSection = styled.section`
