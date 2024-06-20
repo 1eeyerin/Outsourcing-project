@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { Mousewheel, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 import { Button } from '@/components/Button';
 import MenuList from '@/components/Menu/MenuList';
 import supabase from '@/supabase/supabaseClient';
@@ -9,7 +12,6 @@ import supabase from '@/supabase/supabaseClient';
 const Home = () => {
   const [menus, setMenus] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const location = useLocation();
 
   useEffect(() => {
     const loadMenus = async () => {
@@ -29,49 +31,64 @@ const Home = () => {
     loadMenus();
   }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
-
   if (isLoading) return null;
 
   return (
     <StContainer>
-      <StMainSection>
-        <StIntroSection>
-          <StIntroText1>
-            1943: 전통과 현대가
-            <br />
-            어우러진 공간
-          </StIntroText1>
-          <StIntroText2>
-            1943 Drink, Laugh, and Immerse Yourself
-            <br />
-            in a Classic Atmosphere
-          </StIntroText2>
-          <Button href="/store" aria-label="Find Store">
-            매장찾기
-          </Button>
-        </StIntroSection>
-        <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
-      </StMainSection>
-      <StMenuSection>
-        <StMenuHeader>
-          <StMenuTitle>메뉴소개</StMenuTitle>
-          <StMenuViewMore to="/menu">더보기</StMenuViewMore>
-        </StMenuHeader>
-        <StMenuListContainer>
-          <MenuList menus={menus} />
-        </StMenuListContainer>
-      </StMenuSection>
-      <StSpaceSection>
-        <StSectionTitle>공간소개</StSectionTitle>
-        <StSpaceImages>
-          <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
-          <StSpaceImage src="/images/main-space-2.png" alt="Space 2" />
-          <StSpaceImage src="/images/main-space-3.png" alt="Space 3" />
-        </StSpaceImages>
-      </StSpaceSection>
+      <StyledSwiper
+        direction={'vertical'}
+        spaceBetween={30}
+        slidesPerView={1}
+        mousewheel={true}
+        pagination={{
+          clickable: true
+        }}
+        modules={[Mousewheel, Pagination]}
+        onSlideChange={(swiper) => console.log(swiper)}
+        onSwiper={(swiper) => swiper.mousewheel.enable()}
+      >
+        <StyledSwiperSlide>
+          <StMainSection>
+            <StIntroSection>
+              <StIntroText1>
+                1943: 전통과 현대가
+                <br />
+                어우러진 공간
+              </StIntroText1>
+              <StIntroText2>
+                1943 Drink, Laugh, and Immerse Yourself
+                <br />
+                in a Classic Atmosphere
+              </StIntroText2>
+              <Button href="/store" aria-label="Find Store">
+                매장찾기
+              </Button>
+            </StIntroSection>
+            <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
+          </StMainSection>
+        </StyledSwiperSlide>
+        <StyledSwiperSlide>
+          <StMenuSection>
+            <StMenuHeader>
+              <StMenuTitle>메뉴소개</StMenuTitle>
+              <StMenuViewMore to="/menu">더보기</StMenuViewMore>
+            </StMenuHeader>
+            <StMenuListContainer>
+              <MenuList menus={menus} />
+            </StMenuListContainer>
+          </StMenuSection>
+        </StyledSwiperSlide>
+        <StyledSwiperSlide>
+          <StSpaceSection>
+            <StSectionTitle>공간소개</StSectionTitle>
+            <StSpaceImages>
+              <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
+              <StSpaceImage src="/images/main-space-2.png" alt="Space 2" />
+              <StSpaceImage src="/images/main-space-3.png" alt="Space 3" />
+            </StSpaceImages>
+          </StSpaceSection>
+        </StyledSwiperSlide>
+      </StyledSwiper>
     </StContainer>
   );
 };
@@ -90,9 +107,20 @@ const StContainer = styled.div`
   padding: 0 ${spacing.xlarge};
 `;
 
+const StyledSwiper = styled(Swiper)`
+  width: 100%;
+  height: 100vh;
+
+  .swiper-pagination {
+    display: none;
+  }
+`;
+
+const StyledSwiperSlide = styled(SwiperSlide)``;
+
 const StMainSection = styled.section`
   width: 100%;
-  height: 634px;
+  height: 100vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
