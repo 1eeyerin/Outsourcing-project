@@ -223,7 +223,7 @@ const StSearchBox = styled.div`
   background-color: #ffffff;
   box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
   overflow: hidden;
-  z-index: 10;
+  z-index: 9;
 `;
 
 const StParagraph = styled.p`

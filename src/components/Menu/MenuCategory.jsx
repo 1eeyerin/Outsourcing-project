@@ -23,6 +23,9 @@ const StCategoryList = styled.ul`
   display: flex;
   gap: 10px;
   padding-top: 26px;
+  @media (max-width: 768px) {
+    gap: 5px;
+  }
 `;
 
 const StCategoryItem = styled.li`

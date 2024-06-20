@@ -34,10 +34,14 @@ const Board = () => {
   );
 };
 const StContainerBox = styled.div`
+  max-width: 1400px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding-bottom: 32px;
+  padding: 48px 0 32px;
+  @media (max-width: 1400px) {
+    padding: 48px 20px;
+  }
 `;
 const StButton = styled.button`
   width: 60px;
@@ -45,10 +49,10 @@ const StButton = styled.button`
   padding: 15px;
   border: solid 0 #e5e7eb;
   background-color: #3b7dff;
-  border-radius: 60px;
+  border-radius: 50%;
   position: fixed;
   bottom: 40px;
-  right: 50px;
+  right: 100px;
   font-size: 24px;
   font-weight: bold;
   color: #ffffff;
@@ -84,12 +88,13 @@ const StSpanDiv = styled.div`
   padding: 32px 0 0;
 
   & > span:nth-child(1) {
-    max-width: 1230px;
+    max-width: 100px;
     font-size: 16px;
     font-weight: 600;
     color: #ffffff;
     flex-shrink: 0;
-    ${ellipsisStyle(1)};
+
+    ${ellipsisStyle(1)}
   }
 
   & > span:nth-child(2) {
