@@ -9,7 +9,20 @@ const StMenuList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin-top: 28px;
+  justify-content: center;
   gap: 20px 13px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 export default MenuList;

@@ -34,6 +34,10 @@ const StHeader = styled.header`
   top: 0;
   z-index: 10;
   padding: 24px 0;
+
+  @media (max-width: 1400px) {
+    padding: 0 20px;
+  }
 `;
 
 const StContents = styled.div`
