@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { Mousewheel, Pagination } from 'swiper';
+import styled, { css } from 'styled-components';
+import { Mousewheel, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Button } from '@/components/Button';
+import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
 import supabase from '@/supabase/supabaseClient';
 
@@ -34,7 +35,8 @@ const Home = () => {
   if (isLoading) return null;
 
   return (
-    <StContainer>
+    <>
+      <Header css={headerStyle} />
       <StyledSwiper
         direction={'vertical'}
         spaceBetween={30}
@@ -89,7 +91,7 @@ const Home = () => {
           </StSpaceSection>
         </StyledSwiperSlide>
       </StyledSwiper>
-    </StContainer>
+    </>
   );
 };
 
@@ -101,10 +103,17 @@ const spacing = {
   xxlarge: '230px'
 };
 
+const headerStyle = css`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+`;
+
 const StContainer = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 ${spacing.xlarge};
 `;
 
 const StyledSwiper = styled(Swiper)`
