@@ -28,10 +28,8 @@ const StMenuItem = styled.div`
   justify-content: flex-end;
   align-items: flex-start;
   background-color: #f3efe6;
-  width: 340px;
-  height: 520px;
+  aspect-ratio: 2/3;
   position: relative;
-  cursor: pointer;
   overflow: hidden;
 
   .menu-title {
@@ -74,6 +72,11 @@ const StMenuItem = styled.div`
     background: rgba(0, 0, 0, 20%);
     z-index: 1;
     transition: 0.4s;
+  }
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 `;
 
