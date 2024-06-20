@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
 import MenuList from '@/components/Menu/MenuList';
@@ -8,6 +9,7 @@ import supabase from '@/supabase/supabaseClient';
 const Home = () => {
   const [menus, setMenus] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     const loadMenus = async () => {
@@ -26,6 +28,10 @@ const Home = () => {
 
     loadMenus();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   if (isLoading) return null;
 
