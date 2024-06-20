@@ -45,6 +45,7 @@ const StContainerBox = styled.ul`
   flex-direction: column;
   gap: 24px;
   padding: 48px 0 32px;
+
   @media (max-width: 1400px) {
     padding: 48px 20px;
   }
@@ -58,7 +59,7 @@ const StButton = styled.button`
   border-radius: 50%;
   position: fixed;
   bottom: 40px;
-  right: 100px;
+  right: 40px;
   font-size: 24px;
   font-weight: bold;
   color: #ffffff;

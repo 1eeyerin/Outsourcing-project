@@ -206,6 +206,11 @@ const StMapWrap = styled.div`
   height: 607px;
   opacity: ${({ $isLoading }) => ($isLoading ? 0 : 1)};
   transition: opacity 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    height: auto;
+    padding-bottom: 100px;
+  }
 `;
 
 const StMap = styled.div`
@@ -214,6 +219,11 @@ const StMap = styled.div`
   height: 100%;
   border-radius: 15px;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    position: relative;
+    height: 300px;
+  }
 `;
 
 const StSearchBox = styled.div`
@@ -229,6 +239,15 @@ const StSearchBox = styled.div`
   box-shadow: 0 20px 60px 0 rgba(0, 0, 0, 0.03);
   overflow: hidden;
   z-index: 9;
+
+  @media (max-width: 768px) {
+    position: relative;
+    top: -20px;
+    left: unset;
+    width: 100%;
+    height: 100%;
+    height: 300px;
+  }
 `;
 
 const StParagraph = styled.p`
