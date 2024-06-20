@@ -37,7 +37,7 @@ const StContainerBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 48px 0 32px;
+  padding-bottom: 32px;
 `;
 const StButton = styled.button`
   width: 60px;

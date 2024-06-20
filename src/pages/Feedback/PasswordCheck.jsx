@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '@/components/Button';
 import { Input } from '@/components/Form';
-import { Typography } from '@/components/Typography';
+import SectionTitle from '@/components/Typography/SectionTitle';
 import { useGetFeedbackPassword } from '@/stores/queries/useFeedbackQueries';
 
 const PasswordCheck = () => {
@@ -27,9 +27,9 @@ const PasswordCheck = () => {
   return (
     <form onSubmit={handleSubmit}>
       <StTypographyWrapper>
-        <Typography size="l" weight="b">
-          고객의소리
-        </Typography>
+        <SectionTitle size="l" weight="700">
+          고객의 소리
+        </SectionTitle>
       </StTypographyWrapper>
       <StGuideText>
         비밀글이에요
