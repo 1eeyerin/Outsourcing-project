@@ -27,25 +27,24 @@ const Board = () => {
   }, []);
 
   return (
-    <StcontainerBox>
+    <StContainerBox>
       {posts.map((post) => (
-        <StcontentBox key={post.id}>
+        <StContentBox key={post.id}>
           <span>{post.title}</span>
           <span>{post.content}</span>
-          <StspanDiv>
+          <StSpanDiv>
             <span>{post.name}</span>
             <span>{getDate(post.created_at)}</span>
-          </StspanDiv>
-        </StcontentBox>
+          </StSpanDiv>
+        </StContentBox>
       ))}
-      <Stbutton onClick={handleAdd}>+</Stbutton>
-    </StcontainerBox>
+      <StButton onClick={handleAdd}>+</StButton>
+    </StContainerBox>
   );
 };
-const StcontainerBox = styled.div`
+const StContainerBox = styled.div`
   width: 1400px;
   height: 816px;
-  flex-grow: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -54,10 +53,9 @@ const StcontainerBox = styled.div`
   padding: 48px 0 32px;
 }
 `;
-const Stbutton = styled.button`
+const StButton = styled.button`
   width: 60px;
   height: 60px;
-  flex-grow: 0;
   padding: 15px;
   border: solid 0 #e5e7eb;
   background-color: #3b7dff;
@@ -70,9 +68,7 @@ const Stbutton = styled.button`
   color: #fff;
 `;
 
-const StcontentBox = styled.div`
-  align-self: stretch;
-  flex-grow: 0;
+const StContentBox = styled.div`
   display: flex;
   gap: 10px;
   flex-direction: column;
@@ -83,23 +79,19 @@ const StcontentBox = styled.div`
   background-color: #11151b;
 
   & > span:nth-child(1) {
-    flex-grow: 1;
-    font-family: Pretendard;
     font-size: 20px;
     font-weight: bold;
     color: #fff;
     ${ellipsisStyle(1)}
   }
   & > span:nth-child(2) {
-    flex-grow: 1;
-    font-family: Pretendard;
     font-size: 16px;
     font-weight: 500;
     color: #727272;
     ${ellipsisStyle(1)}
   }
 `;
-const StspanDiv = styled.div`
+const StSpanDiv = styled.div`
   width: 140px;
   height: 51px;
   flex-grow: 0;
@@ -112,8 +104,6 @@ const StspanDiv = styled.div`
 
   & > span:nth-child(1) {
     max-width: 1230px;
-    flex-grow: 0;
-    font-family: Pretendard;
     font-size: 16px;
     font-weight: 600;
     color: #fff;
