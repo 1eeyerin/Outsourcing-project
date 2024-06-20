@@ -1,18 +1,9 @@
+import { handleSupabaseRequest } from './request';
 import supabase from './supabaseClient';
 
 const FEEDBACK = 'feedback';
 
-const handleSupabaseRequest = async (request) => {
-  const { data, error } = await request;
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-};
-
-export const showFeedback = () => {
+export const getFeedbacks = () => {
   return handleSupabaseRequest(supabase.from(FEEDBACK).select('*').order('created_at', { ascending: false }));
 };
 

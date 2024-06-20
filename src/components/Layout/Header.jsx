@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Typography } from '@/components/Typography';
 
-const Header = () => {
+const Header = ({ css }) => {
   return (
-    <StHeader>
+    <StHeader $css={css}>
       <StContents>
         <StLink to="/">
           <StHeading>
@@ -47,6 +47,7 @@ const StHeader = styled.header`
   top: 0;
   z-index: 10;
   padding: 24px 0;
+  ${({ $css }) => $css};
 `;
 
 const StContents = styled.div`

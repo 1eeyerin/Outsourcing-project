@@ -7,7 +7,6 @@ import iconSearch from '@/assets/icons/icon_search.svg';
 
 const StoreContainer = () => {
   const [map, setMap] = useState(null);
-  const [infowindow, setInfowindow] = useState(null);
   const [ps, setPs] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [placesList, setPlacesList] = useState([]);
@@ -56,7 +55,7 @@ const StoreContainer = () => {
       bounds.extend(placePosition);
 
       window.kakao.maps.event.addListener(marker, 'click', () => {
-        displayInfowindow(marker, place.place_name);
+        map.panTo(marker.getPosition());
       });
     });
 
@@ -85,22 +84,11 @@ const StoreContainer = () => {
     return marker;
   };
 
-  const displayInfowindow = (marker, title) => {
-    infowindow.setContent(`<div style="padding:5px;color:#333333;">${title}</div>`);
-    infowindow.open(map, marker);
-  };
-
   const removeMarkers = () => {
     markers.forEach((marker) => {
       marker.setMap(null);
     });
     setMarkers([]);
-  };
-
-  const handleClickPlace = (index) => {
-    const marker = markers[index];
-    map.panTo(marker.getPosition());
-    displayInfowindow(marker, marker.getTitle());
   };
 
   const handleInputChange = (e) => {
@@ -119,15 +107,25 @@ const StoreContainer = () => {
     }
   };
 
+  const handleClickPlace = (index) => {
+    const marker = markers[index];
+    const position = marker.getPosition();
+
+    map.panTo(position);
+
+    const bounds = new window.kakao.maps.LatLngBounds();
+    bounds.extend(position);
+    map.setBounds(bounds);
+  };
+
   useEffect(() => {
     const loadMap = () => {
       window.kakao.maps.load(() => {
         const mapInstance = new window.kakao.maps.Map(document.getElementById('map'), {
           center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-          level: 3
+          level: 5
         });
         setMap(mapInstance);
-        setInfowindow(new window.kakao.maps.InfoWindow({ zIndex: 1 }));
         setPs(new window.kakao.maps.services.Places());
       });
     };
@@ -137,11 +135,11 @@ const StoreContainer = () => {
 
   useEffect(() => {
     if (ps && searchTerm) {
-      const debouncedSearch = debounce(searchPlaces, 1000); // debounce 함수로 searchPlaces 함수를 2초 지연시킵니다.
-      debouncedSearch(searchTerm); // 검색어가 변경될 때마다 debouncedSearch 함수를 호출합니다.
+      const debouncedSearch = debounce(searchPlaces, 1000);
+      debouncedSearch(searchTerm);
 
       return () => {
-        debouncedSearch.cancel(); // cleanup 함수에서 debounce된 함수를 취소합니다.
+        debouncedSearch.cancel();
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
