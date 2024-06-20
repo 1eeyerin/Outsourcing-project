@@ -1,6 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addFeedback, deleteFeedback, getFeedback, getFeedbackPassword, updateFeedback } from '@/supabase/feedback';
+import {
+  addFeedback,
+  deleteFeedback,
+  getFeedback,
+  getFeedbackPassword,
+  getFeedbacks,
+  updateFeedback
+} from '@/supabase/feedback';
 
 export const useGetFeedback = (id) => {
   return useQuery({
@@ -64,5 +71,12 @@ export const useDeleteFeedback = (id) => {
       alert('삭제되었어요.');
       navigate('/feedback');
     }
+  });
+};
+
+export const useGetFeedbacks = () => {
+  return useQuery({
+    queryKey: ['feedback'],
+    queryFn: getFeedbacks
   });
 };

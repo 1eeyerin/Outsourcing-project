@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
-import { showFeedback } from '@/supabase/feedback';
+import { useGetFeedbacks } from '@/stores/queries/useFeedbackQueries';
 
 const getDate = (date) => {
   const newDate = new Date(date);
@@ -10,21 +9,13 @@ const getDate = (date) => {
 };
 
 const Board = () => {
-  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
 
-  const showFeedbackData = async () => {
-    const getData = await showFeedback();
-    setPosts(getData);
-  };
+  const { data: posts = [] } = useGetFeedbacks();
 
   const handleAdd = () => {
     navigate('/feedback/write');
   };
-
-  useEffect(() => {
-    showFeedbackData();
-  }, []);
 
   return (
     <StContainerBox>
