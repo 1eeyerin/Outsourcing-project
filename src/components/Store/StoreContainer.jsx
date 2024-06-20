@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
+import { Typography } from '@/components/Typography';
+import SectionTitle from '@/components/Typography/SectionTitle';
 import iconSearch from '@/assets/icons/icon_search.svg';
-import Typography from '../Typography/Typography';
 
 const StoreContainer = () => {
   const [map, setMap] = useState(null);
@@ -145,10 +146,10 @@ const StoreContainer = () => {
   }, [ps, searchTerm]);
 
   return (
-    <StContainer>
-      <Typography size="l" weight="b">
+    <div>
+      <SectionTitle size="l" weight="700">
         매장찾기
-      </Typography>
+      </SectionTitle>
       <StMapWrap>
         <StMap id="map" />
         <StSearchBox>
@@ -170,8 +171,12 @@ const StoreContainer = () => {
               <ul>
                 {placesList.map((place, index) => (
                   <StItem key={index} onClick={() => handleClickPlace(index)}>
-                    <StItemTitle>{place.place_name}</StItemTitle>
-                    <StItemAdress>{place.address_name}</StItemAdress>
+                    <Typography as="strong" size="s" color="#232323" weight="700">
+                      {place.place_name}
+                    </Typography>
+                    <Typography as="p" size="xs" color="#b0b0b0">
+                      {place.address_name}
+                    </Typography>
                   </StItem>
                 ))}
               </ul>
@@ -189,13 +194,9 @@ const StoreContainer = () => {
           </StListBox>
         </StSearchBox>
       </StMapWrap>
-    </StContainer>
+    </div>
   );
 };
-
-const StContainer = styled.div`
-  padding: 56px 0;
-`;
 
 const StMapWrap = styled.div`
   position: relative;
@@ -283,24 +284,15 @@ const StListBox = styled.div`
 `;
 
 const StItem = styled.li`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding: 24px;
   cursor: pointer;
 
   &:hover {
     background-color: #f7f7f7;
   }
-`;
-
-const StItemTitle = styled.h5`
-  margin-bottom: 10px;
-  color: #232323;
-  font-size: 16px;
-  font-weight: 700;
-`;
-
-const StItemAdress = styled.p`
-  color: #b0b0b0;
-  font-size: 13px;
 `;
 
 const StPagination = styled.div`

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { MenuCategory, MenuList } from '@/components/Menu';
+import SectionTitle from '@/components/Typography/SectionTitle';
 import { useFetchMenus } from '@/stores/queries/useMenuQueries';
 
 const Menu = () => {
@@ -27,7 +28,9 @@ const Menu = () => {
 
   return (
     <StMenuContainer>
-      <StMenuTitle>메뉴소개</StMenuTitle>
+      <SectionTitle size="l" weight="700">
+        메뉴소개
+      </SectionTitle>
       <MenuCategory categories={categories} selectedCategory={selectedCategory} onCategoryChange={onCategoryChange} />
       <MenuList menus={menus} />
     </StMenuContainer>
@@ -35,14 +38,7 @@ const Menu = () => {
 };
 
 const StMenuContainer = styled.div`
-  margin-top: 80px;
   height: 100%;
-`;
-const StMenuTitle = styled.h3`
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 84px;
-  text-align: center;
 `;
 
 export default Menu;

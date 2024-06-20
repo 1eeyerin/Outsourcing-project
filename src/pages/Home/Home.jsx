@@ -6,6 +6,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Button from '@/components/Button/Button';
 import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
+import { Typography } from '@/components/Typography';
+import supabase from '@/supabase/supabaseClient';
 import { fetchLimitedMenus } from '@/supabase/menu';
 import 'swiper/css/pagination';
 import 'swiper/css';
@@ -19,6 +21,52 @@ const Home = () => {
   if (isPending) return null;
 
   return (
+    <StContainer>
+      <StMainSection>
+        <StIntroSection>
+          <StIntroText1>
+            1943: 전통과 현대가
+            <br />
+            어우러진 공간
+          </StIntroText1>
+          <StIntroText2>
+            1943 Drink, Laugh, and Immerse Yourself
+            <br />
+            in a Classic Atmosphere
+          </StIntroText2>
+          <Button href="/store" aria-label="Find Store">
+            매장찾기
+          </Button>
+        </StIntroSection>
+        <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
+      </StMainSection>
+      <StMenuSection>
+        <StMenuHeader>
+          <Typography size="l" weight="500">
+            메뉴소개
+          </Typography>
+          <StMenuViewMore to="/menu">
+            <Typography size="s" as="span" color="#999999">
+              더보기
+            </Typography>
+          </StMenuViewMore>
+        </StMenuHeader>
+        <StMenuListContainer>
+          <MenuList menus={menus} />
+        </StMenuListContainer>
+      </StMenuSection>
+      <StSpaceSection>
+        <Typography size="l" weight="500">
+          공간소개
+        </Typography>
+        <StSpaceImages>
+          <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
+          <StSpaceImage src="/images/main-space-2.png" alt="Space 2" />
+          <StSpaceImage src="/images/main-space-3.png" alt="Space 3" />
+        </StSpaceImages>
+      </StSpaceSection>
+    </StContainer>
+
     <>
       <Header css={headerStyle} />
       <StyledSwiper
@@ -89,6 +137,10 @@ const spacing = {
   xxlarge: '230px'
 };
 
+const StContainer = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+
 const headerStyle = css`
   position: fixed;
   top: 0;
@@ -121,6 +173,7 @@ const StMainSection = styled.section`
 `;
 
 const StIntroSection = styled.div`
+  margin: 0 ${spacing.xlarge};
   width: 100%;
   margin-left: ${spacing.large};
 `;
@@ -140,7 +193,7 @@ const StIntroText2 = styled.p`
 const StIntroImage = styled.img`
   height: 634px;
   object-fit: contain;
-  margin-right: ${spacing.xlarge};
+  margin-right: ${spacing.large};
 `;
 
 const StMenuSection = styled.section`
@@ -157,10 +210,6 @@ const StMenuHeader = styled.div`
   width: 100%;
 `;
 
-const StMenuTitle = styled.h2`
-  font-size: 24px;
-`;
-
 const StMenuViewMore = styled(Link)`
   font-size: 14px;
   color: #777777;
@@ -173,7 +222,7 @@ const StMenuListContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: ${spacing.medium};
+  margin-top: 18px;
 `;
 
 const StSpaceSection = styled.section`
@@ -184,16 +233,13 @@ const StSpaceSection = styled.section`
   width: 1400px;
 `;
 
-const StSectionTitle = styled.h2`
-  font-size: 24px;
-`;
-
 const StSpaceImages = styled.div`
   width: 100%;
   max-width: 1185px;
   height: 557px;
   display: flex;
   justify-content: space-between;
+  margin-top: 16px;
 `;
 
 const StSpaceImage = styled.img`
