@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import styled, { css } from 'styled-components';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,13 +7,14 @@ import Button from '@/components/Button/Button';
 import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
 import { Typography } from '@/components/Typography';
-import { fetchLimitedMenus } from '@/supabase/menu';
+import { useFetchLimitedMenus } from '@/stores/queries/useMenuQueries';
 import 'swiper/css/pagination';
 import 'swiper/css';
 
 const Home = () => {
   const [menuCount, setMenuCount] = useState(() => (window.innerWidth <= 768 ? 2 : 4));
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { data: menus, isPending } = useFetchLimitedMenus(menuCount);
 
   const handleResize = () => {
     setIsMobile(window.innerWidth <= 768);
@@ -25,12 +25,6 @@ const Home = () => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const { data: menus, isPending } = useQuery({
-    queryKey: ['fetchLimitedMenus', menuCount],
-    queryFn: () => fetchLimitedMenus(menuCount),
-    keepPreviousData: true
-  });
 
   if (isPending) return null;
 

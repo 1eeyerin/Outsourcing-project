@@ -1,6 +1,6 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import isEmpty from 'lodash/isEmpty';
-import { fetchAllMenus, fetchCategoryMenus } from '@/supabase/menu';
+import { fetchAllMenus, fetchCategoryMenus, fetchLimitedMenus } from '@/supabase/menu';
 import { QUERY_KEYS } from './constants';
 
 export const useInfiniteFetchMenus = (category, limit) => {
@@ -18,5 +18,13 @@ export const useInfiniteFetchMenus = (category, limit) => {
     enabled: !!category,
     staleTime: 3600 * 1000,
     cacheTime: 3600 * 1000
+  });
+};
+
+export const useFetchLimitedMenus = (menuCount) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.FETCH_LIMITED_MENUS(menuCount),
+    queryFn: () => fetchLimitedMenus(menuCount),
+    keepPreviousData: true
   });
 };
