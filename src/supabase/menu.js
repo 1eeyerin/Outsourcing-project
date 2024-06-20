@@ -1,24 +1,25 @@
-import supabase from '../supabase/supabaseClient';
 import { handleSupabaseRequest } from './request';
+import supabase from './supabaseClient';
 
-export const fetchMenus = async (category) => {
-  if (category === 'all') {
-    const { data, error } = await supabase.from('menus').select('title, content, thumbnail, category');
+const COMMON_FIELDS = ['title', 'content', 'thumbnail', 'id'].join(', ');
 
-    if (error) {
-      throw new Error(error.message);
-    }
+export const fetchAllMenus = async ({ pageParam = 0, limit = 4 }) => {
+  return handleSupabaseRequest(
+    supabase
+      .from('menus')
+      .select(`${COMMON_FIELDS}, category`)
+      .range(pageParam, pageParam + (limit - 1))
+  );
+};
 
-    return data;
-  } else {
-    const { data, error } = await supabase.from('menus').select('title, content, thumbnail').eq('category', category);
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return data;
-  }
+export const fetchCategoryMenus = async ({ category, pageParam = 0, limit = 4 }) => {
+  return handleSupabaseRequest(
+    supabase
+      .from('menus')
+      .select(COMMON_FIELDS)
+      .eq('category', category)
+      .range(pageParam, pageParam + (limit - 1))
+  );
 };
 
 export const fetchLimitedMenus = (num = 4) => {

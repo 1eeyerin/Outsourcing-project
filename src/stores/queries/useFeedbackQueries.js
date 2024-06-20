@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import isEmpty from 'lodash/isEmpty';
 import {
   addFeedback,
   deleteFeedback,
@@ -10,10 +11,15 @@ import {
 } from '@/supabase/feedback';
 import { QUERY_KEYS } from './constants';
 
-export const useGetFeedbacks = () => {
-  return useQuery({
+export const useInfiniteGetFeedbacks = (limit) => {
+  return useInfiniteQuery({
     queryKey: QUERY_KEYS.FEEDBACKS,
-    queryFn: getFeedbacks
+    getNextPageParam: (lastPage, allPages) => {
+      if (isEmpty(lastPage)) return undefined;
+      return allPages.length * limit;
+    },
+    queryFn: ({ pageParam }) => getFeedbacks({ pageParam, limit }),
+    select: (data) => data.pages.flat()
   });
 };
 

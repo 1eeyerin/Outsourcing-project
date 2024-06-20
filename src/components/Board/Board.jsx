@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
-import { useGetFeedbacks } from '@/stores/queries/useFeedbackQueries';
+import { useInfiniteGetFeedbacks } from '@/stores/queries/useFeedbackQueries';
+import InfiniteScroll from '../InfiniteScroll';
 
 const getDate = (date) => {
   const newDate = new Date(date);
@@ -11,7 +12,7 @@ const getDate = (date) => {
 const Board = () => {
   const navigate = useNavigate();
 
-  const { data: posts = [] } = useGetFeedbacks();
+  const { data: posts = [], fetchNextPage, hasNextPage } = useInfiniteGetFeedbacks(4);
 
   const handleAdd = () => {
     navigate('/feedback/write');
@@ -19,21 +20,26 @@ const Board = () => {
 
   return (
     <StContainerBox>
-      {posts.map((post) => (
-        <StContentBox key={post.id} to={`/feedback/${post.id}/password-check`}>
-          <span>{post.title}</span>
-          <span>{post.content}</span>
-          <StSpanDiv>
-            <span>{post.name}</span>
-            <span>{getDate(post.created_at)}</span>
-          </StSpanDiv>
-        </StContentBox>
-      ))}
+      <InfiniteScroll fetchNextPage={fetchNextPage} hasNextPage={hasNextPage}>
+        {posts.map((post) => (
+          <li key={post.id}>
+            <StContentBox to={`/feedback/${post.id}/password-check`}>
+              <span>{post.title}</span>
+              <span>{post.content}</span>
+              <StSpanDiv>
+                <span>{post.name}</span>
+                <span>{getDate(post.created_at)}</span>
+              </StSpanDiv>
+            </StContentBox>
+          </li>
+        ))}
+      </InfiniteScroll>
       <StButton onClick={handleAdd}>+</StButton>
     </StContainerBox>
   );
 };
-const StContainerBox = styled.div`
+
+const StContainerBox = styled.ul`
   max-width: 1400px;
   display: flex;
   flex-direction: column;
