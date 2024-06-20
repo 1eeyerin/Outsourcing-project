@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Typography } from '@/components/Typography';
 import SectionTitle from '@/components/Typography/SectionTitle';
 import iconSearch from '@/assets/icons/icon_search.svg';
+import Loader from '../Loader';
 
 const StoreContainer = () => {
   const [map, setMap] = useState(null);
@@ -146,11 +147,12 @@ const StoreContainer = () => {
   }, [ps, searchTerm]);
 
   return (
-    <div>
+    <>
       <SectionTitle size="l" weight="700">
         매장찾기
       </SectionTitle>
       <StMapWrap>
+        <Loader display css={loaderStyle} />
         <StMap id="map" />
         <StSearchBox>
           <StParagraph>찾으실 매장을 검색해주세요</StParagraph>
@@ -194,7 +196,7 @@ const StoreContainer = () => {
           </StListBox>
         </StSearchBox>
       </StMapWrap>
-    </div>
+    </>
   );
 };
 
@@ -202,6 +204,8 @@ const StMapWrap = styled.div`
   position: relative;
   width: 100%;
   height: 607px;
+  opacity: ${({ $isLoading }) => ($isLoading ? 0 : 1)};
+  transition: opacity 0.3s ease-in-out;
 `;
 
 const StMap = styled.div`
@@ -209,6 +213,7 @@ const StMap = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 15px;
+  overflow: hidden;
 `;
 
 const StSearchBox = styled.div`
@@ -303,6 +308,10 @@ const StButton = styled.button`
   border: none;
   background-color: inherit;
   cursor: pointer;
+`;
+
+const loaderStyle = css`
+  position: absolute;
 `;
 
 export default StoreContainer;
