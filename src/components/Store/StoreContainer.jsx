@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import styled from 'styled-components';
+import { Typography } from '@/components/Typography';
 import iconSearch from '@/assets/icons/icon_search.svg';
-import Typography from '../Typography/Typography';
 
 const StoreContainer = () => {
   const [map, setMap] = useState(null);
