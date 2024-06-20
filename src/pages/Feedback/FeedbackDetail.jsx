@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
 import { ellipsisStyle } from '@/styles/utils';
 import { useDeleteFeedback, useGetFeedback } from '@/stores/queries/useFeedbackQueries';
 
@@ -13,7 +14,12 @@ const FeedbackDetail = () => {
   if (isPending) return null;
 
   return (
-    <div>
+    <>
+      <StTypographyWrapper>
+        <Typography size="l" weight="b">
+          고객의소리
+        </Typography>
+      </StTypographyWrapper>
       <StArticle>
         <StText>{data.title}</StText>
         <StText>
@@ -34,9 +40,13 @@ const FeedbackDetail = () => {
           </Button>
         </StRow>
       </StButtons>
-    </div>
+    </>
   );
 };
+
+const StTypographyWrapper = styled.div`
+  margin-top: 56px;
+`;
 
 const StRow = styled.div`
   display: flex;

@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
 import Textarea from '@/components/Textarea';
+import { Typography } from '@/components/Typography';
 import { useAddFeedback, useGetFeedbackFromQueries, useUpdateFeedback } from '@/stores/queries/useFeedbackQueries';
 import FeedbackError from './FeedbackError';
 
@@ -41,6 +42,11 @@ const FeedbackForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <StTypographyWrapper>
+        <Typography size="l" weight="b">
+          고객의소리
+        </Typography>
+      </StTypographyWrapper>
       <StInputs>
         <StInputRow>
           <Input placeholder="닉네임" name="name" defaultValue={data.name} readOnly={isEdit} />
@@ -62,6 +68,10 @@ const FeedbackForm = () => {
     </form>
   );
 };
+
+const StTypographyWrapper = styled.div`
+  margin-top: 56px;
+`;
 
 const StButtons = styled.div`
   display: flex;

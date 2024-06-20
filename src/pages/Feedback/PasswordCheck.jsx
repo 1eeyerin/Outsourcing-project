@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
+import { Typography } from '@/components/Typography';
 import { useGetFeedbackPassword } from '@/stores/queries/useFeedbackQueries';
 
 const PasswordCheck = () => {
@@ -25,6 +26,11 @@ const PasswordCheck = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <StTypographyWrapper>
+        <Typography size="l" weight="b">
+          고객의소리
+        </Typography>
+      </StTypographyWrapper>
       <StGuideText>
         비밀글이에요
         <br />
@@ -44,6 +50,10 @@ const PasswordCheck = () => {
     </form>
   );
 };
+
+const StTypographyWrapper = styled.div`
+  margin-top: 56px;
+`;
 
 const StGuideText = styled.p`
   font-size: 20px;
