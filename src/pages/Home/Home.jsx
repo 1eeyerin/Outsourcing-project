@@ -32,7 +32,7 @@ const Home = () => {
     loadMenus();
   }, []);
 
-  if (isLoading) return null;
+  if (isLoading) return <Loading>Loading...</Loading>;
 
   return (
     <>
@@ -46,49 +46,53 @@ const Home = () => {
           clickable: true
         }}
         modules={[Mousewheel, Pagination]}
-        onSlideChange={(swiper) => console.log(swiper)}
-        onSwiper={(swiper) => swiper.mousewheel.enable()}
       >
         <StyledSwiperSlide>
-          <StMainSection>
-            <StIntroSection>
-              <StIntroText1>
-                1943: 전통과 현대가
-                <br />
-                어우러진 공간
-              </StIntroText1>
-              <StIntroText2>
-                1943 Drink, Laugh, and Immerse Yourself
-                <br />
-                in a Classic Atmosphere
-              </StIntroText2>
-              <Button href="/store" aria-label="Find Store">
-                매장찾기
-              </Button>
-            </StIntroSection>
-            <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
-          </StMainSection>
+          <SlideWrapper>
+            <StMainSection>
+              <StIntroSection>
+                <StIntroText1>
+                  1943: 전통과 현대가
+                  <br />
+                  어우러진 공간
+                </StIntroText1>
+                <StIntroText2>
+                  1943 Drink, Laugh, and Immerse Yourself
+                  <br />
+                  in a Classic Atmosphere
+                </StIntroText2>
+                <Button href="/store" aria-label="Find Store">
+                  매장찾기
+                </Button>
+              </StIntroSection>
+              <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
+            </StMainSection>
+          </SlideWrapper>
         </StyledSwiperSlide>
         <StyledSwiperSlide>
-          <StMenuSection>
-            <StMenuHeader>
-              <StMenuTitle>메뉴소개</StMenuTitle>
-              <StMenuViewMore to="/menu">더보기</StMenuViewMore>
-            </StMenuHeader>
-            <StMenuListContainer>
-              <MenuList menus={menus} />
-            </StMenuListContainer>
-          </StMenuSection>
+          <SlideWrapper>
+            <StMenuSection>
+              <StMenuHeader>
+                <StMenuTitle>메뉴소개</StMenuTitle>
+                <StMenuViewMore to="/menu">더보기</StMenuViewMore>
+              </StMenuHeader>
+              <StMenuListContainer>
+                <MenuList menus={menus} />
+              </StMenuListContainer>
+            </StMenuSection>
+          </SlideWrapper>
         </StyledSwiperSlide>
         <StyledSwiperSlide>
-          <StSpaceSection>
-            <StSectionTitle>공간소개</StSectionTitle>
-            <StSpaceImages>
-              <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
-              <StSpaceImage src="/images/main-space-2.png" alt="Space 2" />
-              <StSpaceImage src="/images/main-space-3.png" alt="Space 3" />
-            </StSpaceImages>
-          </StSpaceSection>
+          <SlideWrapper>
+            <StSpaceSection>
+              <StSectionTitle>공간소개</StSectionTitle>
+              <StSpaceImages>
+                <StSpaceImage src="/images/main-space-1.png" alt="Space 1" />
+                <StSpaceImage src="/images/main-space-2.png" alt="Space 2" />
+                <StSpaceImage src="/images/main-space-3.png" alt="Space 3" />
+              </StSpaceImages>
+            </StSpaceSection>
+          </SlideWrapper>
         </StyledSwiperSlide>
       </StyledSwiper>
     </>
@@ -111,11 +115,6 @@ const headerStyle = css`
   z-index: 100;
 `;
 
-const StContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-`;
-
 const StyledSwiper = styled(Swiper)`
   width: 100%;
   height: 100vh;
@@ -127,17 +126,24 @@ const StyledSwiper = styled(Swiper)`
 
 const StyledSwiperSlide = styled(SwiperSlide)``;
 
+const SlideWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-top: 118px;
+`;
+
 const StMainSection = styled.section`
-  width: 100%;
-  height: 100vh;
+  width: 1400px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: ${spacing.xlarge} auto;
 `;
 
 const StIntroSection = styled.div`
-  margin: 0 ${spacing.large};
+  width: 100%;
+  margin-left: ${spacing.large};
 `;
 
 const StIntroText1 = styled.h1`
@@ -159,11 +165,10 @@ const StIntroImage = styled.img`
 `;
 
 const StMenuSection = styled.section`
-  margin-bottom: ${spacing.xxlarge};
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: 1400px;
 `;
 
 const StMenuHeader = styled.div`
@@ -197,7 +202,7 @@ const StSpaceSection = styled.section`
   flex-direction: column;
   align-items: center;
   gap: ${spacing.medium};
-  padding-bottom: 277px;
+  width: 1400px;
 `;
 
 const StSectionTitle = styled.h2`
@@ -216,6 +221,14 @@ const StSpaceImage = styled.img`
   flex: 1;
   margin: 0 ${spacing.small} 0 0;
   max-height: 100%;
+`;
+
+const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
 `;
 
 export default Home;
