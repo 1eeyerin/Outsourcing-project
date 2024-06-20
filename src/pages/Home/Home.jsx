@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '@/components/Button';
+import Button from '@/components/Button';
 import MenuList from '@/components/Menu/MenuList';
 import supabase from '@/supabase/supabaseClient';
 
