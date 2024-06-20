@@ -1,4 +1,5 @@
 import supabase from '../supabase/supabaseClient';
+import { handleSupabaseRequest } from './request';
 
 export const fetchMenus = async (category) => {
   if (category === 'all') {
@@ -18,4 +19,8 @@ export const fetchMenus = async (category) => {
 
     return data;
   }
+};
+
+export const fetchLimitedMenus = (num = 4) => {
+  return handleSupabaseRequest(supabase.from('menus').select('title, content, thumbnail').limit(num));
 };

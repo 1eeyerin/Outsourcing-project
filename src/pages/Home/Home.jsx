@@ -1,39 +1,22 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import styled, { css } from 'styled-components';
 import { Mousewheel, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import useScrollToTop from '@/hooks/useScrollToTop';
 import Button from '@/components/Button/Button';
 import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
-import supabase from '@/supabase/supabaseClient';
+import { fetchLimitedMenus } from '@/supabase/menu';
 import 'swiper/css/pagination';
 import 'swiper/css';
 
 const Home = () => {
-  const [menus, setMenus] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: menus, isPending } = useQuery({
+    queryKey: ['fetchLimitedMenus'],
+    queryFn: () => fetchLimitedMenus(4)
+  });
 
-  useScrollToTop();
-
-  useEffect(() => {
-    const loadMenus = async () => {
-      try {
-        const { data, error } = await supabase.from('menus').select('title, content, thumbnail, category').limit(4);
-        if (error) throw new Error(error.message);
-        setMenus(data);
-      } catch (error) {
-        console.error('Error loading menus:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadMenus();
-  }, []);
-
-  if (isLoading) return null;
+  if (isPending) return null;
 
   return (
     <>
