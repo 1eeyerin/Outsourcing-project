@@ -12,6 +12,10 @@ const handleSupabaseRequest = async (request) => {
   return data;
 };
 
+export const showFeedback = () => {
+  return handleSupabaseRequest(supabase.from(FEEDBACK).select('*').order('created_at', { ascending: false }));
+};
+
 export const getFeedback = (id) => {
   return handleSupabaseRequest(
     supabase.from(FEEDBACK).select('*').eq('id', id).order('created_at', { ascending: false })

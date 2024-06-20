@@ -1,9 +1,12 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
+import { ellipsisStyle } from '@/styles/utils';
 import { useDeleteFeedback, useGetFeedback } from '@/stores/queries/useFeedbackQueries';
 
 const FeedbackDetail = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data, isPending } = useGetFeedback(id);
   const { mutate: deleteFeedbackMutation } = useDeleteFeedback(id);
@@ -11,14 +14,23 @@ const FeedbackDetail = () => {
   if (isPending) return null;
 
   return (
-    <div>
+    <>
+      <StTypographyWrapper>
+        <Typography size="l" weight="b">
+          고객의소리
+        </Typography>
+      </StTypographyWrapper>
       <StArticle>
         <StText>{data.title}</StText>
-        <StText>{data.name}</StText>
+        <StText>
+          <div>{data.name}</div>
+        </StText>
         <StContent>{data.content}</StContent>
       </StArticle>
       <StButtons>
-        <Button variant="rounded">목록으로</Button>
+        <Button variant="rounded" onClick={() => navigate('/feedback')}>
+          목록으로
+        </Button>
         <StRow>
           <Button variant="rounded" href={`/feedback/${id}/edit`}>
             수정하기
@@ -28,9 +40,13 @@ const FeedbackDetail = () => {
           </Button>
         </StRow>
       </StButtons>
-    </div>
+    </>
   );
 };
+
+const StTypographyWrapper = styled.div`
+  margin-top: 56px;
+`;
 
 const StRow = styled.div`
   display: flex;
@@ -57,6 +73,10 @@ const StText = styled.div`
   font-size: 18px;
   font-weight: 500;
   color: #c6c6c6;
+
+  div {
+    ${ellipsisStyle(1)};
+  }
 `;
 
 const StContent = styled.p`
