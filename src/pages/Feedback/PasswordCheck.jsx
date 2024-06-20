@@ -1,12 +1,14 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
 import Input from '@/components/Input';
+import { Typography } from '@/components/Typography';
 import { useGetFeedbackPassword } from '@/stores/queries/useFeedbackQueries';
 
 const PasswordCheck = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { data: password } = useGetFeedbackPassword(1);
+  const { data: password } = useGetFeedbackPassword(id);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,25 +21,39 @@ const PasswordCheck = () => {
       return;
     }
 
-    navigate('/feedback/1');
+    navigate(`/feedback/${id}`);
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <StTypographyWrapper>
+        <Typography size="l" weight="b">
+          고객의소리
+        </Typography>
+      </StTypographyWrapper>
       <StGuideText>
         비밀글이에요
         <br />
         비밀번호를 입력해주세요
       </StGuideText>
       <StInputWrapper>
-        <Input type="password" placeholder="비밀번호 입력" />
-        <Button type="submit" variant="rounded">
-          비밀번호 확인
-        </Button>
+        <Input type="password" name="password" placeholder="비밀번호 입력" />
+        <StButtonWrapper>
+          <Button type="button" variant="rounded" onClick={() => navigate(-1)}>
+            뒤로가기
+          </Button>
+          <Button type="submit" variant="rounded">
+            비밀번호 확인
+          </Button>
+        </StButtonWrapper>
       </StInputWrapper>
     </form>
   );
 };
+
+const StTypographyWrapper = styled.div`
+  margin-top: 56px;
+`;
 
 const StGuideText = styled.p`
   font-size: 20px;
@@ -57,6 +73,11 @@ const StInputWrapper = styled.div`
   input {
     width: 450px;
   }
+`;
+
+const StButtonWrapper = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 
 export default PasswordCheck;
