@@ -1,7 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { addFeedback, deleteFeedback, getFeedback, getFeedbackPassword, updateFeedback } from '@/supabase/feedback';
+import {
+  addFeedback,
+  deleteFeedback,
+  getFeedback,
+  getFeedbackPassword,
+  getFeedbacks,
+  updateFeedback
+} from '@/supabase/feedback';
 import { QUERY_KEYS } from './constants';
+
+export const useGetFeedbacks = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.FEEDBACKS,
+    queryFn: getFeedbacks
+  });
+};
 
 export const useGetFeedback = (id) => {
   return useQuery({
@@ -31,7 +45,7 @@ export const useAddFeedback = (options) => {
   return useMutation({
     mutationFn: (content) => addFeedback(content),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['feedback'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FEEDBACKS });
       alert('작성이 완료되었어요');
       navigate('/feedback');
     },
@@ -61,7 +75,7 @@ export const useDeleteFeedback = (id) => {
   return useMutation({
     mutationFn: () => deleteFeedback(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['feedback'] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FEEDBACKS });
       alert('삭제되었어요.');
       navigate('/feedback');
     }
