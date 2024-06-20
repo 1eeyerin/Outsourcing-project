@@ -43,6 +43,8 @@ const Home = () => {
         slidesPerView={1}
         mousewheel={true}
         pagination={{ clickable: true }}
+        speed={800}
+        easing="ease-in-out"
         modules={[Mousewheel, Pagination]}
       >
         <SwiperSlide>
@@ -179,7 +181,6 @@ const StMainSection = styled.section`
 const StIntroSection = styled.div`
   margin: 0 ${spacing.xlarge};
   width: 100%;
-  margin-left: ${spacing.large};
 
   @media (max-width: 768px) {
     order: 2;
@@ -193,6 +194,16 @@ const StIntroText1 = styled.h1`
   font-size: 48px;
   margin-bottom: 17px;
   line-height: 1.2;
+  opacity: 0;
+  transform: translateY(60px);
+  filter: blur(5px);
+  transition: 0.8s ease-in-out;
+
+  .swiper-slide-active & {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px);
+  }
 
   @media (max-width: 768px) {
     order: 3;
@@ -205,6 +216,16 @@ const StIntroText2 = styled.p`
   font-size: 16px;
   margin-bottom: 65px;
   line-height: 1.5;
+  opacity: 0;
+  transform: translateY(60px);
+  filter: blur(5px);
+  transition: 0.8s 0.1s ease-in-out;
+
+  .swiper-slide-active & {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px);
+  }
 
   @media (max-width: 768px) {
     order: 4;
@@ -217,6 +238,14 @@ const StIntroImage = styled.img`
   height: 634px;
   object-fit: contain;
   margin-right: ${spacing.large};
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.8s 0.3s ease-in-out;
+
+  .swiper-slide-active & {
+    opacity: 1;
+    transform: translateY(0px);
+  }
 
   @media (max-width: 768px) {
     order: 1;
@@ -271,6 +300,17 @@ const StMenuListContainer = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
   }
+
+  @media (max-width: 1200px) {
+    ul {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    li:nth-child(3),
+    li:nth-child(4) {
+      display: none;
+    }
+  }
 `;
 
 const StSpaceSection = styled.section`
@@ -317,12 +357,22 @@ const StSpaceImage = styled.img`
 `;
 
 const StButton = styled(Button)`
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 0.8s 0.2s ease-in-out;
+
+  .swiper-slide-active & {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
   @media (max-width: 768px) {
     order: 5;
     margin-top: 0px;
     width: 100%;
   }
 `;
+
 const StMenuAndSpaceSection = styled.div`
   display: flex;
   flex-direction: column;

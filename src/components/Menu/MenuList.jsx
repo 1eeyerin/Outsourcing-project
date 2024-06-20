@@ -7,13 +7,13 @@ const MenuList = ({ menus }) => {
   return (
     <StMenuList>
       {menus.map((menu, index) => (
-        <MenuItem key={index} menu={menu} />
+        <MenuItem as="li" key={index} menu={menu} />
       ))}
     </StMenuList>
   );
 };
 
-const StMenuList = styled.div`
+const StMenuList = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin-top: 28px;

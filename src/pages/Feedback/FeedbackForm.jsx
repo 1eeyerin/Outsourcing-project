@@ -48,13 +48,13 @@ const FeedbackForm = () => {
       </StTypographyWrapper>
       <StInputs>
         <StInputRow>
-          <Input placeholder="닉네임" name="name" defaultValue={data.name} readOnly={isEdit} />
-          <Input type="email" placeholder="이메일" name="email" defaultValue={data.email} readOnly={isEdit} />
-          <Input type="password" placeholder="비밀번호" name="password" required={isEdit} />
-          <Input type="password" placeholder="비밀번호 확인" name="passwordConfirm" required={isEdit} />
+          <Input placeholder="닉네임" name="name" defaultValue={data.name} readOnly={isEdit} required />
+          <Input type="email" placeholder="이메일" name="email" defaultValue={data.email} readOnly={isEdit} required />
+          <Input type="password" placeholder="비밀번호" name="password" required />
+          <Input type="password" placeholder="비밀번호 확인" name="passwordConfirm" required />
         </StInputRow>
-        <Input placeholder="제목" css={inputStyle} name="title" defaultValue={data.title} required={isEdit} />
-        <Textarea placeholder="내용" name="content" defaultValue={data.content} required={isEdit} />
+        <Input placeholder="제목" css={inputStyle} name="title" defaultValue={data.title} required />
+        <Textarea placeholder="내용" name="content" defaultValue={data.content} required />
       </StInputs>
       <StButtons>
         <Button type="button" variant="rounded" onClick={() => navigate(-1)}>
@@ -92,6 +92,14 @@ const StInputRow = styled.div`
   input {
     width: calc(25% - 48px);
     flex-grow: 1;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    input {
+      width: 100%;
+    }
   }
 `;
 

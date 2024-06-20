@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
 
-const MenuItem = ({ menu }) => (
-  <StMenuItem>
+const MenuItem = ({ menu, as = 'div' }) => (
+  <StMenuItem as={as}>
     <StImageWrapper className="imageBox">
       <img src={menu.thumbnail} alt={menu.title} />
     </StImageWrapper>
@@ -102,9 +102,14 @@ const StMenuTitle = styled.strong`
   line-height: 1.4;
   color: #000000;
   transform: translate(0, 100px);
+  word-break: keep-all;
   transition:
     opacity 0.2s,
     transform 0.4s;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
 `;
 
 const StMenuContent = styled.p`
@@ -116,6 +121,10 @@ const StMenuContent = styled.p`
   transition:
     opacity 0.1s,
     transform 0.8s;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 export default MenuItem;
