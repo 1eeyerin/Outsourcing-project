@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-const Typography = ({ as = 'h2', size = 'l', weight = 'regular', color = '#ffffff', ...props }) => {
+const Typography = ({ as = 'p', size = 'l', weight = '400', color = '#ffffff', ...props }) => {
   return <StTypograph as={as} $size={size} $weight={weight} $color={color} {...props} />;
 };
 
@@ -14,27 +14,15 @@ const sizeStyles = {
   s: css`
     font-size: 16px;
   `,
-  sm: css`
+  xs: css`
     font-size: 15px;
   `
 };
 
-const weightStyles = {
-  b: css`
-    font-weight: 700;
-  `,
-  m: css`
-    font-weight: 500;
-  `,
-  r: css`
-    font-weight: 400;
-  `
-};
-
-const StTypograph = styled.h2`
+const StTypograph = styled.p`
   ${({ $size }) => sizeStyles[$size] || sizeStyles.s};
-  ${({ $weight }) => weightStyles[$weight] || weightStyles.r};
-  text-align: center;
-  margin-bottom: 58px;
+  font-weight: ${({ $weight }) => $weight};
+  color: ${({ $color }) => $color};
 `;
+
 export default Typography;

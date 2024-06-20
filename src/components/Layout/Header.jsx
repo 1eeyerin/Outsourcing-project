@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Typography } from '@/components/Typography';
 
 const Header = () => {
   return (
@@ -13,13 +14,25 @@ const Header = () => {
         </StLink>
         <StyledNav>
           <li>
-            <Link to="/menu">메뉴</Link>
+            <Link to="/menu">
+              <Typography size="s" as="span">
+                메뉴
+              </Typography>
+            </Link>
           </li>
           <li>
-            <Link to="/store">매장찾기</Link>
+            <Link to="/store">
+              <Typography size="s" as="span">
+                매장찾기
+              </Typography>
+            </Link>
           </li>
           <li>
-            <Link to="/feedback">고객의소리</Link>
+            <Link to="/feedback">
+              <Typography size="s" as="span">
+                고객의 소리
+              </Typography>
+            </Link>
           </li>
         </StyledNav>
       </StContents>

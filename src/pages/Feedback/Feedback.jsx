@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Board from '@/components/Board';
+import SectionTitle from '@/components/Typography/SectionTitle';
 
 const StContainer = styled.div`
   max-width: 1440px;
@@ -7,26 +8,12 @@ const StContainer = styled.div`
     font-size: 30px;
   }
 `;
-const StTitleDiv = styled.div`
-  width: 1440px;
-  height: 150px;
-  text-align: center;
-`;
-const StSpan = styled.span`
-  width: 104px;
-  height: 34px;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 1.4;
-  letter-spacing: normal;
-  color: #fff;
-`;
 const Feedback = () => {
   return (
     <StContainer>
-      <StTitleDiv>
-        <StSpan>고객의 소리</StSpan>
-      </StTitleDiv>
+      <SectionTitle size="l" weight="700">
+        고객의 소리
+      </SectionTitle>
       <Board />
     </StContainer>
   );
