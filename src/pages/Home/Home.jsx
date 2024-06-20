@@ -5,7 +5,7 @@ import { Mousewheel, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { Button } from '@/components/Button';
+import Button from '@/components/Button/Button';
 import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
 import supabase from '@/supabase/supabaseClient';
@@ -18,9 +18,7 @@ const Home = () => {
     const loadMenus = async () => {
       try {
         const { data, error } = await supabase.from('menus').select('title, content, thumbnail, category').limit(4);
-
         if (error) throw new Error(error.message);
-
         setMenus(data);
       } catch (error) {
         console.error('Error loading menus:', error);
@@ -32,7 +30,7 @@ const Home = () => {
     loadMenus();
   }, []);
 
-  if (isLoading) return <Loading>Loading...</Loading>;
+  if (isLoading) return null;
 
   return (
     <>
@@ -42,12 +40,10 @@ const Home = () => {
         spaceBetween={30}
         slidesPerView={1}
         mousewheel={true}
-        pagination={{
-          clickable: true
-        }}
+        pagination={{ clickable: true }}
         modules={[Mousewheel, Pagination]}
       >
-        <StyledSwiperSlide>
+        <SwiperSlide>
           <SlideWrapper>
             <StMainSection>
               <StIntroSection>
@@ -68,8 +64,8 @@ const Home = () => {
               <StIntroImage src="/images/main-feature-bg.png" alt="Intro" />
             </StMainSection>
           </SlideWrapper>
-        </StyledSwiperSlide>
-        <StyledSwiperSlide>
+        </SwiperSlide>
+        <SwiperSlide>
           <SlideWrapper>
             <StMenuSection>
               <StMenuHeader>
@@ -81,8 +77,8 @@ const Home = () => {
               </StMenuListContainer>
             </StMenuSection>
           </SlideWrapper>
-        </StyledSwiperSlide>
-        <StyledSwiperSlide>
+        </SwiperSlide>
+        <SwiperSlide>
           <SlideWrapper>
             <StSpaceSection>
               <StSectionTitle>공간소개</StSectionTitle>
@@ -93,7 +89,7 @@ const Home = () => {
               </StSpaceImages>
             </StSpaceSection>
           </SlideWrapper>
-        </StyledSwiperSlide>
+        </SwiperSlide>
       </StyledSwiper>
     </>
   );
@@ -124,14 +120,12 @@ const StyledSwiper = styled(Swiper)`
   }
 `;
 
-const StyledSwiperSlide = styled(SwiperSlide)``;
-
 const SlideWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding-top: 118px;
+  padding-top: 100px;
 `;
 
 const StMainSection = styled.section`
@@ -221,14 +215,6 @@ const StSpaceImage = styled.img`
   flex: 1;
   margin: 0 ${spacing.small} 0 0;
   max-height: 100%;
-`;
-
-const Loading = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 24px;
 `;
 
 export default Home;
