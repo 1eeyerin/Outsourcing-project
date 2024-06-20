@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
 import { showFeedback } from '@/supabase/feedback';
@@ -29,7 +29,7 @@ const Board = () => {
   return (
     <StContainerBox>
       {posts.map((post) => (
-        <StContentBox key={post.id}>
+        <StContentBox key={post.id} to={`/feedback/${post.id}/password-check`}>
           <span>{post.title}</span>
           <span>{post.content}</span>
           <StSpanDiv>
@@ -67,7 +67,7 @@ const StButton = styled.button`
   color: #fff;
 `;
 
-const StContentBox = styled.div`
+const StContentBox = styled(Link)`
   display: flex;
   gap: 10px;
   flex-direction: column;
