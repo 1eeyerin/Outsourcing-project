@@ -8,7 +8,7 @@ import {
   getFeedbackPassword,
   getFeedbacks,
   updateFeedback
-} from '@/supabase/feedback';
+} from '@/api/feedback';
 import { QUERY_KEYS } from './constants';
 
 export const useInfiniteGetFeedbacks = (limit) => {
