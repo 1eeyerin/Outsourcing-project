@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 import Button from '@/components/Button';
 import { Textarea, Input } from '@/components/Form';
 import SectionTitle from '@/components/Typography/SectionTitle';
+import { respondTo } from '@/styles/theme';
 import { useAddFeedback, useGetFeedbackFromQueries, useUpdateFeedback } from '@/stores/queries/useFeedbackQueries';
 import FeedbackError from './FeedbackError';
 
@@ -105,13 +106,13 @@ const StInputRow = styled.div`
     flex-grow: 1;
   }
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     flex-direction: column;
 
     input {
       width: 100%;
     }
-  }
+  `)}
 `;
 
 const inputStyle = css`

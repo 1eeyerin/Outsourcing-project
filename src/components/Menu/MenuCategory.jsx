@@ -1,5 +1,6 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Typography } from '@/components/Typography';
+import { respondTo } from '@/styles/theme';
 
 const CATEGORIES = [
   { value: 'all', label: '전체' },
@@ -32,9 +33,9 @@ const StCategoryList = styled.ul`
   gap: 10px;
   padding-top: 26px;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     gap: 5px;
-  }
+  `)}
 `;
 
 const StCategoryItem = styled.li`

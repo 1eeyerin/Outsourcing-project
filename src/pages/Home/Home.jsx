@@ -7,18 +7,20 @@ import Button from '@/components/Button/Button';
 import Header from '@/components/Layout/Header';
 import MenuList from '@/components/Menu/MenuList';
 import { Typography } from '@/components/Typography';
+import { breakpoints } from '@/styles/mediaQueries';
+import { respondTo } from '@/styles/theme';
 import { useFetchLimitedMenus } from '@/stores/queries/useMenuQueries';
 import 'swiper/css/pagination';
 import 'swiper/css';
 
 const Home = () => {
-  const [menuCount, setMenuCount] = useState(() => (window.innerWidth <= 768 ? 2 : 4));
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [menuCount, setMenuCount] = useState(() => (window.innerWidth <= breakpoints.mobile ? 2 : 4));
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= breakpoints.mobile);
   const { data: menus, isPending } = useFetchLimitedMenus(menuCount);
 
   const handleResize = () => {
-    setIsMobile(window.innerWidth <= 768);
-    setMenuCount(window.innerWidth <= 768 ? 2 : 4);
+    setIsMobile(window.innerWidth <= breakpoints.mobile);
+    setMenuCount(window.innerWidth <= breakpoints.mobile ? 2 : 4);
   };
 
   useEffect(() => {
@@ -166,22 +168,22 @@ const StMainSection = styled.section`
   justify-content: space-between;
   align-items: center;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     flex-direction: column;
     align-items: flex-start;
-  }
+  `)}
 `;
 
 const StIntroSection = styled.div`
   margin: 0 ${spacing.xlarge};
   width: 100%;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     order: 2;
     margin: 0;
     padding: 0 ${spacing.small};
     margin-top: ${spacing.small};
-  }
+  `)}
 `;
 
 const StIntroText1 = styled.h1`
@@ -199,11 +201,11 @@ const StIntroText1 = styled.h1`
     transform: translateY(0px);
   }
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     order: 3;
     font-size: 26px;
     font-weight: 400;
-  }
+  `)}
 `;
 
 const StIntroText2 = styled.p`
@@ -221,11 +223,11 @@ const StIntroText2 = styled.p`
     transform: translateY(0px);
   }
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     order: 4;
     font-size: 13px;
     font-weight: 400;
-  }
+  `)}
 `;
 
 const StIntroImage = styled.img`
@@ -241,7 +243,7 @@ const StIntroImage = styled.img`
     transform: translateY(0px);
   }
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     order: 1;
     width: 100%;
     margin-bottom: 16px;
@@ -249,7 +251,7 @@ const StIntroImage = styled.img`
     height: auto;
     object-fit: cover;
     padding: 0 ${spacing.small};
-  }
+  `)}
 `;
 
 const StMenuSection = styled.section`
@@ -266,10 +268,10 @@ const StMenuHeader = styled.div`
   align-items: center;
   width: 100%;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     justify-content: space-between;
     width: 400px;
-  }
+  `)}
 `;
 
 const StMenuViewMore = styled(Link)`
@@ -287,15 +289,15 @@ const StMenuListContainer = styled.div`
   margin-top: 18px;
   flex-wrap: wrap;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     margin-top: 10px;
     width: 30%;
     height: 30%;
     justify-content: flex-start;
     align-items: flex-start;
-  }
+  `)}
 
-  @media (max-width: 1200px) {
+  ${respondTo.tablet(css`
     ul {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -304,7 +306,7 @@ const StMenuListContainer = styled.div`
     li:nth-child(4) {
       display: none;
     }
-  }
+  `)}
 `;
 
 const StSpaceSection = styled.section`
@@ -324,14 +326,14 @@ const StSpaceImages = styled.div`
   justify-content: space-between;
   margin-top: 16px;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     display: flex;
     flex-direction: row;
     margin-top: 0px;
     max-width: 300px;
     justify-content: center;
     padding: 0 ${spacing.small};
-  }
+  `)}
 `;
 
 const StSpaceImage = styled.img`
@@ -340,14 +342,14 @@ const StSpaceImage = styled.img`
   max-height: 100%;
   object-fit: cover;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     flex: none;
     width: 100%;
     max-width: 100%;
     height: auto;
     max-height: 200px;
     margin: 10px 0;
-  }
+  `)}
 `;
 
 const StButton = styled(Button)`
@@ -360,11 +362,11 @@ const StButton = styled(Button)`
     transform: translateY(0px);
   }
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     order: 5;
     margin-top: 0px;
     width: 100%;
-  }
+  `)}
 `;
 
 const StMenuAndSpaceSection = styled.div`
