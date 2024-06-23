@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { ellipsisStyle } from '@/styles/utils';
+import styled, { css } from 'styled-components';
+import { ellipsisStyle, respondTo } from '@/styles/utils';
 
 const MenuItem = ({ menu, as = 'div' }) => (
   <StMenuItem as={as}>
@@ -107,9 +107,9 @@ const StMenuTitle = styled.strong`
     opacity 0.2s,
     transform 0.4s;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     font-size: 20px;
-  }
+  `)}
 `;
 
 const StMenuContent = styled.p`
@@ -122,9 +122,9 @@ const StMenuContent = styled.p`
     opacity 0.1s,
     transform 0.8s;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     font-size: 15px;
-  }
+  `)}
 `;
 
 export default MenuItem;

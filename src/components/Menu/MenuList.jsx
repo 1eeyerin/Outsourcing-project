@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { respondTo } from '@/styles/theme';
 import MenuItem from './MenuItem';
 
 const MenuList = ({ menus }) => {
@@ -20,18 +21,10 @@ const StMenuList = styled.ul`
   justify-content: center;
   gap: 20px 13px;
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (max-width: 992px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
+  ${respondTo.tablet(css`
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-  }
+  `)}
 `;
 
 export default MenuList;

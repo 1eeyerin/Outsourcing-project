@@ -1,4 +1,4 @@
-export const handleSupabaseRequest = async (request) => {
+export const handleApiRequest = async (request) => {
   const { data, error } = await request;
 
   if (error) {

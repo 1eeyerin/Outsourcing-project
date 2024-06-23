@@ -71,7 +71,8 @@ const StInputWrapper = styled.div`
   gap: 48px;
 
   input {
-    width: 450px;
+    max-width: 450px;
+    width: 100%;
   }
 `;
 
