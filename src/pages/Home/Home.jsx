@@ -148,7 +148,7 @@ const headerStyle = css`
 
 const StyledSwiper = styled(Swiper)`
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
 
   .swiper-pagination {
     display: none;
