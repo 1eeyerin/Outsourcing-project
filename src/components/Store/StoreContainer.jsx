@@ -3,6 +3,7 @@ import debounce from 'lodash/debounce';
 import styled, { css } from 'styled-components';
 import { Typography } from '@/components/Typography';
 import SectionTitle from '@/components/Typography/SectionTitle';
+import { respondTo } from '@/styles/theme';
 import iconSearch from '@/assets/icons/icon_search.svg';
 import Loader from '../Loader';
 
@@ -207,10 +208,10 @@ const StMapWrap = styled.div`
   opacity: ${({ $isLoading }) => ($isLoading ? 0 : 1)};
   transition: opacity 0.3s ease-in-out;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     height: auto;
     padding-bottom: 100px;
-  }
+  `)}
 `;
 
 const StMap = styled.div`
@@ -220,10 +221,10 @@ const StMap = styled.div`
   border-radius: 15px;
   overflow: hidden;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     position: relative;
     height: 300px;
-  }
+  `)}
 `;
 
 const StSearchBox = styled.div`
@@ -240,14 +241,14 @@ const StSearchBox = styled.div`
   overflow: hidden;
   z-index: 9;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     position: relative;
     top: -20px;
     left: unset;
     width: 100%;
     height: 100%;
     height: 300px;
-  }
+  `)}
 `;
 
 const StParagraph = styled.p`

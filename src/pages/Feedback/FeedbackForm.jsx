@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 import Button from '@/components/Button';
 import { Textarea, Input } from '@/components/Form';
 import SectionTitle from '@/components/Typography/SectionTitle';
+import { respondTo } from '@/styles/theme';
 import { useAddFeedback, useGetFeedbackFromQueries, useUpdateFeedback } from '@/stores/queries/useFeedbackQueries';
 import FeedbackError from './FeedbackError';
 
@@ -12,8 +13,19 @@ const FeedbackForm = () => {
   const isEdit = !!id;
   const navigate = useNavigate();
   const data = useGetFeedbackFromQueries(id);
-  const { mutate: updateMutation } = useUpdateFeedback(id, { enabled: !isEdit });
-  const { mutate: addMutation } = useAddFeedback({ enabled: isEdit });
+  const { mutate: updateMutation } = useUpdateFeedback({
+    id,
+    onSuccess: () => {
+      alert('수정되었어요');
+      navigate(`/feedback/${id}`);
+    }
+  });
+  const { mutate: addMutation } = useAddFeedback({
+    onSuccess: () => {
+      alert('작성이 완료되었어요');
+      navigate('/feedback');
+    }
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -94,13 +106,13 @@ const StInputRow = styled.div`
     flex-grow: 1;
   }
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     flex-direction: column;
 
     input {
       width: 100%;
     }
-  }
+  `)}
 `;
 
 const inputStyle = css`

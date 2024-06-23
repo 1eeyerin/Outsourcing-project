@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Typography } from '@/components/Typography';
+import { respondTo } from '@/styles/theme';
 
 const Header = ({ css }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -100,9 +101,10 @@ const StHeader = styled.header`
   z-index: 1000;
   padding: 24px 0;
   ${({ $css }) => $css};
-  @media (max-width: 1400px) {
+
+  ${respondTo.desktop(css`
     padding: 0 20px;
-  }
+  `)}
 `;
 const StyledNav = styled.ul`
   display: flex;
@@ -111,9 +113,9 @@ const StyledNav = styled.ul`
   font-size: 16px;
   font-weight: 300;
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     display: none;
-  }
+  `)}
 `;
 
 const StContents = styled.div`
@@ -179,9 +181,9 @@ const HamburgerButton = styled.button`
       opacity 0.3s ease;
   }
 
-  @media (max-width: 768px) {
+  ${respondTo.mobile(css`
     display: flex;
-  }
+  `)}
 `;
 
 const OverlayMenu = styled.div`

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { ellipsisStyle } from '@/styles/utils';
+import styled, { css } from 'styled-components';
+import { ellipsisStyle, respondTo } from '@/styles/utils';
 import { useInfiniteGetFeedbacks } from '@/stores/queries/useFeedbackQueries';
 import InfiniteScroll from '../InfiniteScroll';
 
@@ -12,7 +12,7 @@ const getDate = (date) => {
 const Board = () => {
   const navigate = useNavigate();
 
-  const { data: posts = [], fetchNextPage, hasNextPage } = useInfiniteGetFeedbacks(4);
+  const { data: posts = [], fetchNextPage, hasNextPage } = useInfiniteGetFeedbacks({ limit: 4 });
 
   const handleAdd = () => {
     navigate('/feedback/write');
@@ -46,9 +46,9 @@ const StContainerBox = styled.ul`
   gap: 24px;
   padding: 48px 0 32px;
 
-  @media (max-width: 1400px) {
+  ${respondTo.desktop(css`
     padding: 48px 20px;
-  }
+  `)}
 `;
 const StButton = styled.button`
   width: 60px;

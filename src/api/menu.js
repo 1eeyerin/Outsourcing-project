@@ -1,10 +1,10 @@
-import { handleSupabaseRequest } from './request';
+import { handleApiRequest } from './request';
 import supabase from './supabaseClient';
 
 const COMMON_FIELDS = ['title', 'content', 'thumbnail', 'id'].join(', ');
 
 export const fetchAllMenus = async ({ pageParam = 0, limit = 4 }) => {
-  return handleSupabaseRequest(
+  return handleApiRequest(
     supabase
       .from('menus')
       .select(`${COMMON_FIELDS}, category`)
@@ -13,7 +13,7 @@ export const fetchAllMenus = async ({ pageParam = 0, limit = 4 }) => {
 };
 
 export const fetchCategoryMenus = async ({ category, pageParam = 0, limit = 4 }) => {
-  return handleSupabaseRequest(
+  return handleApiRequest(
     supabase
       .from('menus')
       .select(COMMON_FIELDS)
@@ -23,5 +23,5 @@ export const fetchCategoryMenus = async ({ category, pageParam = 0, limit = 4 })
 };
 
 export const fetchLimitedMenus = (num = 4) => {
-  return handleSupabaseRequest(supabase.from('menus').select('title, content, thumbnail').limit(num));
+  return handleApiRequest(supabase.from('menus').select('title, content, thumbnail').limit(num));
 };

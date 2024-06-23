@@ -1,9 +1,9 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import isEmpty from 'lodash/isEmpty';
-import { fetchAllMenus, fetchCategoryMenus, fetchLimitedMenus } from '@/supabase/menu';
+import { fetchAllMenus, fetchCategoryMenus, fetchLimitedMenus } from '@/api/menu';
 import { QUERY_KEYS } from './constants';
 
-export const useInfiniteFetchMenus = (category, limit) => {
+export const useInfiniteFetchMenus = ({ category, limit }) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.MENUS(category),
     getNextPageParam: (lastPage, allPages) => {

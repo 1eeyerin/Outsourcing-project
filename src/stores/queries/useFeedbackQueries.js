@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import isEmpty from 'lodash/isEmpty';
 import {
@@ -8,10 +7,10 @@ import {
   getFeedbackPassword,
   getFeedbacks,
   updateFeedback
-} from '@/supabase/feedback';
+} from '@/api/feedback';
 import { QUERY_KEYS } from './constants';
 
-export const useInfiniteGetFeedbacks = (limit) => {
+export const useInfiniteGetFeedbacks = ({ limit }) => {
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.FEEDBACKS,
     getNextPageParam: (lastPage, allPages) => {
@@ -44,46 +43,40 @@ export const useGetFeedbackPassword = (id) => {
   });
 };
 
-export const useAddFeedback = (options) => {
+export const useAddFeedback = ({ onSuccess, ...options }) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: (content) => addFeedback(content),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FEEDBACKS });
-      alert('작성이 완료되었어요');
-      navigate('/feedback');
+      onSuccess?.();
     },
     ...options
   });
 };
 
-export const useUpdateFeedback = (id) => {
-  const navigate = useNavigate();
+export const useUpdateFeedback = ({ id, onSuccess, ...options }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (content) => updateFeedback({ id, content }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FEEDBACK(id) });
-      alert('수정되었어요');
-      navigate(`/feedback/${id}`);
+      onSuccess?.();
     },
-    enabled: !!id
+    ...options
   });
 };
 
-export const useDeleteFeedback = (id) => {
-  const navigate = useNavigate();
+export const useDeleteFeedback = ({ id, ...options }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => deleteFeedback(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QUERY_KEYS.FEEDBACKS });
-      alert('삭제되었어요.');
-      navigate('/feedback');
-    }
+    },
+    ...options
   });
 };

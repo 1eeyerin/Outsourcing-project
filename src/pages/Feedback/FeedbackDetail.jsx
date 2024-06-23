@@ -9,7 +9,13 @@ const FeedbackDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { data, isPending } = useGetFeedback(id);
-  const { mutate: deleteFeedbackMutation } = useDeleteFeedback(id);
+  const { mutate: deleteFeedbackMutation } = useDeleteFeedback({
+    id,
+    onSuccess: () => {
+      alert('삭제되었어요.');
+      navigate('/feedback');
+    }
+  });
 
   if (isPending) return null;
 
