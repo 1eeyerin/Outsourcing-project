@@ -6,20 +6,20 @@ export const breakpoints = {
   desktop: 1400
 };
 
-export const mobile = (...style) => css`
+export const mobile = (styles) => css`
   @media (max-width: ${breakpoints.mobile}px) {
-    ${css(...style)}
+    ${styles}
   }
 `;
 
-export const tablet = (...style) => css`
+export const tablet = (styles) => css`
   @media (max-width: ${breakpoints.tablet}px) {
-    ${css(...style)}
+    ${styles}
   }
 `;
 
-export const desktop = (...style) => css`
+export const desktop = (styles) => css`
   @media (max-width: ${breakpoints.desktop}px) {
-    ${css(...style)}
+    ${styles}
   }
 `;
