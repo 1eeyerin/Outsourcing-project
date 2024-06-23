@@ -12,7 +12,7 @@ const getDate = (date) => {
 const Board = () => {
   const navigate = useNavigate();
 
-  const { data: posts = [], fetchNextPage, hasNextPage } = useInfiniteGetFeedbacks(4);
+  const { data: posts = [], fetchNextPage, hasNextPage } = useInfiniteGetFeedbacks({ limit: 4 });
 
   const handleAdd = () => {
     navigate('/feedback/write');

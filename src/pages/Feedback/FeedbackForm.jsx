@@ -12,8 +12,19 @@ const FeedbackForm = () => {
   const isEdit = !!id;
   const navigate = useNavigate();
   const data = useGetFeedbackFromQueries(id);
-  const { mutate: updateMutation } = useUpdateFeedback(id, { enabled: !isEdit });
-  const { mutate: addMutation } = useAddFeedback({ enabled: isEdit });
+  const { mutate: updateMutation } = useUpdateFeedback({
+    id,
+    onSuccess: () => {
+      alert('수정되었어요');
+      navigate(`/feedback/${id}`);
+    }
+  });
+  const { mutate: addMutation } = useAddFeedback({
+    onSuccess: () => {
+      alert('작성이 완료되었어요');
+      navigate('/feedback');
+    }
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();

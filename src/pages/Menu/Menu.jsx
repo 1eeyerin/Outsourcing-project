@@ -10,7 +10,15 @@ const Menu = () => {
   const { category } = useParams();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState(category || 'all');
-  const { data: menus = [], fetchNextPage, hasNextPage, isPending } = useInfiniteFetchMenus(selectedCategory, 4);
+  const {
+    data: menus = [],
+    fetchNextPage,
+    hasNextPage,
+    isPending
+  } = useInfiniteFetchMenus({
+    category: selectedCategory,
+    limit: 4
+  });
 
   const onCategoryChange = (category) => {
     navigate(`/menu/${category}`);
