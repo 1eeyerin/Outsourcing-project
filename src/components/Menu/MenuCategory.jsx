@@ -1,10 +1,18 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/components/Typography';
 
-const MenuCategory = ({ categories, selectedCategory, onCategoryChange }) => {
+const CATEGORIES = [
+  { value: 'all', label: '전체' },
+  { value: 'stirfryEasyDishes', label: '볶음&간단' },
+  { value: 'soup', label: '탕' },
+  { value: 'friedFoods', label: '튀김' },
+  { value: 'fruitsDesserts', label: '과일&디저트' }
+];
+
+const MenuCategory = ({ selectedCategory, onCategoryChange }) => {
   return (
     <StCategoryList>
-      {categories.map((category) => {
+      {CATEGORIES.map((category) => {
         const selected = selectedCategory === category.value;
 
         return (
@@ -23,6 +31,7 @@ const StCategoryList = styled.ul`
   display: flex;
   gap: 10px;
   padding-top: 26px;
+
   @media (max-width: 768px) {
     gap: 5px;
   }
